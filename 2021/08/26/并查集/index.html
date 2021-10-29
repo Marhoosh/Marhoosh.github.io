@@ -1,0 +1,417 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.6.2" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.6.2" type="image/png" sizes="32x32"><meta name="description" content="说！你跟他到底有没有关系？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="并查集">
+<meta property="og:url" content="https://marhoosh.github.io/2021/08/26/%E5%B9%B6%E6%9F%A5%E9%9B%86/index.html">
+<meta property="og:site_name" content="Marhoosh&#39;S Blog">
+<meta property="og:description" content="说！你跟他到底有没有关系？">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://marhoosh.github.io/uploads/%E5%B9%B6%E6%9F%A5%E9%9B%86/2021-10-10-21-49-43.png">
+<meta property="article:published_time" content="2021-08-26T15:20:53.000Z">
+<meta property="article:modified_time" content="2021-10-10T13:56:40.095Z">
+<meta property="article:author" content="Marhoosh">
+<meta property="article:tag" content="数据结构">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://marhoosh.github.io/uploads/%E5%B9%B6%E6%9F%A5%E9%9B%86/2021-10-10-21-49-43.png"><title>并查集 | Marhoosh'S Blog</title><link ref="canonical" href="https://marhoosh.github.io/2021/08/26/%E5%B9%B6%E6%9F%A5%E9%9B%86/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.6.2"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":false,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"carbon","highlight":"ocean","wordWrap":true},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/friendlinks/"><span class="header-nav-menu-item__icon"><i class="fas fa-link"></i></span><span class="header-nav-menu-item__text">友链</span></a></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">并查集</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2021-08-26</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2021-10-10</span></span><span class="post-meta-item post-meta-item--visitors"><span class="post-meta-item__icon"><i class="fas fa-eye"></i></span><span class="post-meta-item__info">阅读次数</span><span class="post-meta-item__value" id="busuanzi_value_page_pv"></span></span></div></header><div class="post-body"><p>说！你跟他到底有没有关系？</p>
+<span id="more"></span> 
+
+
+        <h1 id="好题题单"   >
+          <a href="#好题题单" class="heading-link"><i class="fas fa-link"></i></a><a href="#好题题单" class="headerlink" title="好题题单"></a>好题题单</h1>
+      <ul>
+<li><input disabled="" type="checkbox"> <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://codeforces.com/problemset/problem/1213/G" >Path Queries</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+</ul>
+
+        <h1 id="并查集"   >
+          <a href="#并查集" class="heading-link"><i class="fas fa-link"></i></a><a href="#并查集" class="headerlink" title="并查集"></a>并查集</h1>
+      <p><strong>并查集的本质是对传递性关系的维护</strong></p>
+
+        <h2 id="普通并查集"   >
+          <a href="#普通并查集" class="heading-link"><i class="fas fa-link"></i></a><a href="#普通并查集" class="headerlink" title="普通并查集"></a>普通并查集</h2>
+      <p>初始化</p>
+<figure class="highlight cpp"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(ll i=<span class="number">1</span>;i&lt;maxn;i++)  fa[i]=i;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+<p>路径压缩+查找</p>
+<figure class="highlight cpp"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ll <span class="title">found</span><span class="params">(ll x)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> fa[x]==x? x:fa[x]=<span class="built_in">found</span>(fa[x]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+<p>合并</p>
+<figure class="highlight cpp"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ll fu=<span class="built_in">found</span>(u),fv=<span class="built_in">found</span>(v);</span><br><span class="line">fa[fu]=fv;</span><br></pre></td></tr></table></div></figure>
+<p>基础题：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://vjudge.net/problem/HDU-1272" >小希的迷宫</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span><br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://vjudge.net/problem/POJ-2236" >Wireless Network</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h2 id="带权并查集"   >
+          <a href="#带权并查集" class="heading-link"><i class="fas fa-link"></i></a><a href="#带权并查集" class="headerlink" title="带权并查集"></a>带权并查集</h2>
+      <p>做这类带权并查集的题目，解决并查集中两两的关系时，可以用<strong>向量</strong>的思想来做。只要保证路径压缩时，a+b=c，那么这道题就可以放心大胆的用向量加减法来处理权值了。</p>
+<p> <strong>关于权值di[i]的初始化</strong><br> 对于权值di[i]，是需要初始化的，不过一般都是初始化为0，在定义其为全局变量时，就默认为0了，然后有时候就没写在代码里，但是要初始化的。</p>
+
+        <h2 id="经典题型1"   >
+          <a href="#经典题型1" class="heading-link"><i class="fas fa-link"></i></a><a href="#经典题型1" class="headerlink" title="经典题型1"></a>经典题型1</h2>
+      <p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://vjudge.net/problem/POJ-1182" >食物链</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span><br>  题意 a吃b，b吃c，c吃a，求假话数量<br>  思路：带权并查集，比如一句话包含a和b，判断a，b是否在同一并查集内，不在则合并，在则判断这句话是否正确即可。关键在于权值的设置，<br>  这个权值的设置十分巧妙，<strong>有向量那味</strong>，但我还是不知道为什么能这样<br>  感觉这个权值的设置是个巧合，刚好能这么做。<br> <strong>踩坑</strong>：并查集合并一定是fa[fy]=fx，不能fa[y]=x;</p>
+<figure class="highlight cpp"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ll <span class="title">found</span><span class="params">(ll x)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(fa[x]==x)&#123;</span><br><span class="line">        <span class="keyword">return</span> x;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        ll fx=<span class="built_in">found</span>(fa[x]);</span><br><span class="line">        di[x]=(di[x]+di[fa[x]])%<span class="number">3</span>;</span><br><span class="line">        <span class="keyword">return</span> fa[x]=fx;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+
+        <h2 id="经典题型2"   >
+          <a href="#经典题型2" class="heading-link"><i class="fas fa-link"></i></a><a href="#经典题型2" class="headerlink" title="经典题型2"></a>经典题型2</h2>
+      <p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://vjudge.net/problem/HDU-3038" >How Many Answers Are Wrong</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span><br>TT 写一串数字，对 FF 不可见<br>FF 选择一个区间（会重复操作）， TT 把这个区间的和告诉 FF，然额，一些和是不正确的（好狠心的女生），所以，有一些答案是矛盾的，根据这些矛盾求出答案错误的个数。<br>注意两点：1。TT 给的一个 和 是正确的，如果它与之前给的 和 不矛盾。<br>2。FF 发现一个与之前矛盾的 和 之后，该 和 不再参与之后的分析，直接被抛弃了<br><strong>思路</strong> 带权并查集，注意区间端点的设置，为了衔接,将[3,4]和[5,6]变为(2,4]。和(4,6]，这样子两边端点才能衔接上，才会在一个并查集里。</p>
+<p>基础题：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://vjudge.net/problem/POJ-1984" >Navigation Nightmare</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h2 id="灵活运用（带权并查集-hash）"   >
+          <a href="#灵活运用（带权并查集-hash）" class="heading-link"><i class="fas fa-link"></i></a><a href="#灵活运用（带权并查集-hash）" class="headerlink" title="灵活运用（带权并查集+hash）"></a>灵活运用（带权并查集+hash）</h2>
+      <p>本题解决：<br>1.hash后对并查集是否有影响<br>2.并查集中子父结点的大小关系对结果的影响</p>
+<p> <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://vjudge.net/problem/POJ-1733" >Parity game</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span><br><strong>题意</strong>：A有一段最大长度为1e9只含0和1的序列，B询问m次，m&lt;5e3<br>每次询问[l,r]之间1的个数，A会告诉他是奇数个还是偶数个<br>但是A的回答可能是错误的，请判断A的回答从哪次开始矛盾</p>
+<p><strong>思路</strong>：<br>令a为子节点，b为父节点<br>用权值1表示a到b含奇数个1，用权值0表示a到b含偶数个1<br>虽然A的长度很长，有1e9，但B只询问m次,m&lt;5e3，每次询问最多出现两个数字，所以最多1e4种数字<br>所以我们可以将数字长度离散化，我这里是采用hash的方式，这里不用担心hash后会对程序有影响<br><strong>因为这里hash只是将原数字映射到另一个数字罢了，hash(x)与x就为同一个数字,完全不会有影响**，<br>这里进一步说明，hash(x)对程序是没影响的。<br>本来输入是x和y，是x到y，x是小于y的，路径压缩时默认子节点是小于父结点的，<br>**但存在一个问题,hash(x)可能会大于hash(y)，这样子会不会有影响呢？<br>经检验，这里x,y两者大小关系，对运算无影响。因为如果是x&gt;y,那么我们将其反过来，就相当于-w了</strong>。<br>那么我们的运算结果还是一样的，即0+1=0-1 0+0=0-0  1+0=1-0 1+1=1-1(每次运算记得模2)</p>
+<figure class="highlight cpp"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> comment(linker, <span class="meta-string">&quot;/STACK:102400000,102400000&quot;</span>)<span class="comment">//解决递归函数多次调用栈溢出问题</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> Debug(x) cout&lt;&lt;#x&lt;&lt;<span class="meta-string">&#x27;:&#x27;</span>&lt;&lt;x&lt;&lt;endl</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> ll;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INF 0x7fffffff<span class="comment">//10^9级别，不到2^32</span></span></span><br><span class="line"><span class="keyword">const</span> ll maxn=<span class="number">1e5</span>+<span class="number">11</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> jump 10007<span class="comment">//大概比mod小十倍</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> mod 100003<span class="comment">//</span></span></span><br><span class="line">ll lib[mod + <span class="number">2</span>];<span class="comment">//lib[x]记得初始化为数据中不会出现的数，比如这里为-1</span></span><br><span class="line"><span class="function"><span class="keyword">inline</span> ll <span class="title">hash1</span><span class="params">(ll x)</span></span>&#123;<span class="comment">//返回x在哈希表中位置</span></span><br><span class="line">    ll num = x;</span><br><span class="line">    x = (x % mod + mod) % mod;<span class="comment">//包含处理x为负数情况</span></span><br><span class="line">    <span class="keyword">while</span> (lib[x] != <span class="number">-1</span> &amp;&amp; lib[x] != num) x = (x + jump) % mod;</span><br><span class="line">    <span class="keyword">if</span> (lib[x] == <span class="number">-1</span>) &#123;</span><br><span class="line">        lib[x] = num;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> x; </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">ll fa[maxn],di[maxn];</span><br><span class="line"><span class="function">ll <span class="title">found</span><span class="params">(ll x)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(fa[x]==x)&#123;</span><br><span class="line">        <span class="keyword">return</span> x;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        ll fx=<span class="built_in">found</span>(fa[x]);</span><br><span class="line">        di[x]=(di[x]+di[fa[x]])%<span class="number">2</span>;</span><br><span class="line">        <span class="keyword">return</span> fa[x]=fx;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="built_in">memset</span>(lib,<span class="number">-1</span>,<span class="built_in"><span class="keyword">sizeof</span></span>(lib));</span><br><span class="line">    <span class="keyword">for</span>(ll i=<span class="number">0</span>;i&lt;maxn;i++)  fa[i]=i;<span class="comment">//---------------------------为0！！！</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="built_in">init</span>();</span><br><span class="line">    ll n,q;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%lld%lld&quot;</span>,&amp;n,&amp;q);</span><br><span class="line">    ll ans=q,flag=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(ll i=<span class="number">1</span>;i&lt;=q;i++)&#123;</span><br><span class="line">        ll u,v,w;</span><br><span class="line">        <span class="keyword">char</span> ar[<span class="number">11</span>];</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%lld %lld %s&quot;</span>,&amp;u,&amp;v,ar);</span><br><span class="line">        <span class="keyword">if</span>(flag==<span class="number">1</span>)  <span class="keyword">continue</span>;</span><br><span class="line">        <span class="keyword">if</span>(ar[<span class="number">0</span>]==<span class="string">&#x27;e&#x27;</span>)  w=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">else</span>  w=<span class="number">1</span>;</span><br><span class="line">        u-=<span class="number">1</span>;</span><br><span class="line">        u=<span class="built_in">hash1</span>(u),v=<span class="built_in">hash1</span>(v);</span><br><span class="line">        ll fu=<span class="built_in">found</span>(u),fv=<span class="built_in">found</span>(v);</span><br><span class="line">        <span class="keyword">if</span>(fu==fv)&#123;</span><br><span class="line">            <span class="keyword">if</span>((w+di[v])%<span class="number">2</span>==di[u])  ;</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                flag=<span class="number">1</span>;</span><br><span class="line">                ans=i<span class="number">-1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">                fa[fv]=fu;</span><br><span class="line">                di[fv]=(w+di[u]-di[v]+<span class="number">2</span>)%<span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%lld\n&quot;</span>,ans);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></div></figure>
+
+        <h2 id="灵活运用（贪心-并查集）"   >
+          <a href="#灵活运用（贪心-并查集）" class="heading-link"><i class="fas fa-link"></i></a><a href="#灵活运用（贪心-并查集）" class="headerlink" title="灵活运用（贪心+并查集）"></a>灵活运用（贪心+并查集）</h2>
+      <p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://vjudge.net/problem/POJ-1456" >Supermarket </a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span><br>这里其实用贪心做，并查集只是用来作为工具，使得速度更加快。<br><strong>这道题解决</strong>：  用并查集以O(1)找到最近的非空点<br><strong>题意</strong>是买卖N件东西，每件东西都有个截止时间，在截止时间之前买都可以，而每个单位时间只能买一件。问最大获利。</p>
+<p><strong>思路</strong>如果购买不冲突，那么全部买下来就可以了。存在冲突，就需要取舍。显然在冲突的时候我们选择价格高的更优，如此就可以用贪心的算法。先将物品按照价格从高到底的顺序排列，购买一个就在时间点上做一个标记，只要不冲突就可以购买。 如何快速找到第一个不冲突的时间点呢，个人感觉使用并查集很好得解决了这个问题。用并查集维护当前节点最近的空闲点即可。每当一个位置i被选中就将当前节点的父节点更新为i-1，查询时只要父节点非零就证明有空闲位置，选中更新输出答案。</p>
+<figure class="highlight cpp"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> MAXN=<span class="number">10010</span>;</span><br><span class="line"><span class="keyword">int</span> F[MAXN];</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">int</span> p,d;</span><br><span class="line">&#125;node[MAXN];</span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">cmp</span><span class="params">(Node a,Node b)</span><span class="comment">//按p从大到小排序。d没有关系</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a.p&gt;b.p;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">find</span><span class="params">(<span class="keyword">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(F[x]==<span class="number">-1</span>)<span class="keyword">return</span> x;</span><br><span class="line">    <span class="keyword">return</span> F[x]=<span class="built_in">find</span>(F[x]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n;</span><br><span class="line">    <span class="keyword">while</span>(<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;n)==<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">memset</span>(F,<span class="number">-1</span>,<span class="built_in"><span class="keyword">sizeof</span></span>(F));</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)</span><br><span class="line">          <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>,&amp;node[i].p,&amp;node[i].d);</span><br><span class="line">        <span class="built_in">sort</span>(node,node+n,cmp);</span><br><span class="line">        <span class="keyword">int</span> ans=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">int</span> t=<span class="built_in">find</span>(node[i].d);</span><br><span class="line">            <span class="keyword">if</span>(t&gt;<span class="number">0</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                ans+=node[i].p;</span><br><span class="line">                F[t]=t<span class="number">-1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,ans);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+
+
+        <h2 id="灵活运用（连通块，并查集）"   >
+          <a href="#灵活运用（连通块，并查集）" class="heading-link"><i class="fas fa-link"></i></a><a href="#灵活运用（连通块，并查集）" class="headerlink" title="灵活运用（连通块，并查集）"></a>灵活运用（连通块，并查集）</h2>
+      <p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://codeforces.com/problemset/problem/1213/G" >path queries</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span><br>  题意 有m次询问，每次询问一个数字q，问以u,v为端点的路径的最大值不超过q的u，v对有多少个<br>  思路：考试时想了很久，由于没有考虑过连通块，之前也没碰到过。。<br>  导致一直做不出来，就是感觉能做，但一直没做出来<br>  首先我们要知道，对于两个不相连的连通块，如果将他俩连起来，<br>  是需要一条边将这两者连起来的，如果这条边是这两个连通块的所有边的最大值,那么以这条边为最大值的u,v就有size[a]*size[b]个。<br>  那么我们将所有边按从小到大排序，这样子保证新加入的边是目前边的最大值，即两个连通块的最大值,连通块则用并查集处理。</p>
+<p> 贴一个极简风格的大佬代码，真的是绝绝子<br> <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43826249/article/details/105979123?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522162968700116780262582181%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fblog.%2522%257D&request_id=162968700116780262582181&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~blog~first_rank_v2~rank_v29-2-105979123.pc_v2_rank_blog_default&utm_term=path&spm=1018.2226.3001.4450" >原大佬代码链接</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<figure class="highlight cpp"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> GCC optimize(<span class="meta-string">&quot;-Ofast&quot;</span>,<span class="meta-string">&quot;-funroll-all-loops&quot;</span>)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> int long long</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N=<span class="number">2e5</span>+<span class="number">10</span>;</span><br><span class="line"><span class="keyword">int</span> n,m,res[N],ans,f[N],sz[N];</span><br><span class="line">vector&lt;pair&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt; &gt; v[N];</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">find</span><span class="params">(<span class="keyword">int</span> x)</span></span>&#123;<span class="keyword">return</span> x==f[x]?x:f[x]=<span class="built_in">find</span>(f[x]);&#125;</span><br><span class="line"><span class="function"><span class="keyword">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	cin&gt;&gt;n&gt;&gt;m;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>,a,b,c;i&lt;n;i++)	<span class="built_in">scanf</span>(<span class="string">&quot;%lld %lld %lld&quot;</span>,&amp;a,&amp;b,&amp;c),v[c].<span class="built_in">push_back</span>(&#123;a,b&#125;);</span><br><span class="line"><span class="comment">//在for里面就把a,b,c给定义了</span></span><br><span class="line"><span class="comment">//这里用vector存边不得不说很巧妙，v[c]代表以c为权值的边集合,</span></span><br><span class="line"><span class="comment">//再用pair存边的两个端点，不得不说这数据结构设计得十分牛掰</span></span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++)	f[i]=i,sz[i]=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=<span class="number">2e5</span>;i++)&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">auto</span> j:v[i])&#123;<span class="comment">//这个我也表示学到了学到了</span></span><br><span class="line">			<span class="keyword">int</span> x=<span class="built_in">find</span>(j.first),y=<span class="built_in">find</span>(j.second);</span><br><span class="line">			ans+=sz[x]*sz[y];	f[x]=y,sz[y]+=sz[x];</span><br><span class="line">		&#125;</span><br><span class="line">		res[i]=ans;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>,x;i&lt;=m;i++)	<span class="built_in">scanf</span>(<span class="string">&quot;%lld&quot;</span>,&amp;x),<span class="built_in">printf</span>(<span class="string">&quot;%lld &quot;</span>,res[x]);</span><br><span class="line">	<span class="comment">//在for里面定义变量x，这样子就不用在scanf前面加一行x的定义了</span></span><br><span class="line">	<span class="comment">//学到了学到了</span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></div></figure>
+
+
+        <h2 id="带权并查集好题"   >
+          <a href="#带权并查集好题" class="heading-link"><i class="fas fa-link"></i></a><a href="#带权并查集好题" class="headerlink" title="带权并查集好题"></a>带权并查集好题</h2>
+      <p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://vjudge.net/problem/HDU-7136" >Jumping Monkey HDU - 7136 </a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span> </p>
+<p>题意：一个n&lt;1e5的树，每个点有个权值w，从u点能走到v点当且仅当v是uv这条路径上的最大权值，求每个点可以到达的点的个数。</p>
+<details>
+  <summary>点击查看思路</summary>
+  <pre><code>  
+
+<p><img src="/uploads/%E5%B9%B6%E6%9F%A5%E9%9B%86/2021-10-10-21-49-43.png"></p>
+<p>也可以用带权并查集维护这个过程，当按点权从小到大枚举结点u,并将u作为所有与u相连的（已经枚举过的）连通块的根时，<br>我们让fa[ fv ]=fu,d[ fv ]=1;并查集合并时则使d[ x ]=d[ x ]+d[ fa[ x ] ],和树的深度是一个意思。</p>
+<p>  </code></pre></p>
+</details>
+
+<figure class="highlight cpp"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">* @Author: Marhoosh</span></span><br><span class="line"><span class="comment">* @Date:   2021-07-22 10:27:29</span></span><br><span class="line"><span class="comment">* @Last Modified by:   Marhoosh</span></span><br><span class="line"><span class="comment">* @Last Modified time: 2021-10-10 19:04:19</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> comment(linker, <span class="meta-string">&quot;/STACK:102400000,102400000&quot;</span>)</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> Debug(x) cout&lt;&lt;#x&lt;&lt;<span class="meta-string">&#x27;:&#x27;</span>&lt;&lt;x&lt;&lt;endl</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INF 0x7fffffff</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> ll;</span><br><span class="line"><span class="keyword">typedef</span> pair&lt;ll,ll&gt; P;</span><br><span class="line"><span class="keyword">const</span> ll maxn=<span class="number">2e5</span>+<span class="number">11</span>;</span><br><span class="line">ll head[maxn],to[maxn],nex[maxn],var[maxn],d[maxn],fa[maxn];</span><br><span class="line">ll tmp,n;</span><br><span class="line">P po[maxn];</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">(ll u,ll v)</span></span>&#123;</span><br><span class="line">    to[tmp]=v;nex[tmp]=head[u];head[u]=tmp++;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">ll <span class="title">found</span><span class="params">(ll x)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(fa[x]==x)&#123;</span><br><span class="line">        <span class="keyword">return</span> x;</span><br><span class="line">    &#125;</span><br><span class="line">    ll t=<span class="built_in">found</span>(fa[x]);</span><br><span class="line">    d[x]=d[x]+d[fa[x]];</span><br><span class="line">    <span class="keyword">return</span> fa[x]=t;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    ll ca;<span class="built_in">scanf</span>(<span class="string">&quot;%lld&quot;</span>,&amp;ca);</span><br><span class="line">    <span class="keyword">while</span>(ca--)&#123;</span><br><span class="line">        tmp=<span class="number">1</span>;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%lld&quot;</span>,&amp;n);</span><br><span class="line">        <span class="keyword">for</span>(ll i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">            head[i]=<span class="number">0</span>;fa[i]=i;d[i]=<span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(ll i=<span class="number">1</span>;i&lt;=n<span class="number">-1</span>;i++)&#123;</span><br><span class="line">            ll u,v;<span class="built_in">scanf</span>(<span class="string">&quot;%lld%lld&quot;</span>,&amp;u,&amp;v);</span><br><span class="line">            <span class="built_in">add</span>(u,v);<span class="built_in">add</span>(v,u);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(ll i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">            <span class="built_in">scanf</span>(<span class="string">&quot;%lld&quot;</span>,&amp;var[i]);</span><br><span class="line">            po[i]=&#123;var[i],i&#125;;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">sort</span>(po+<span class="number">1</span>,po+<span class="number">1</span>+n);</span><br><span class="line">        <span class="keyword">for</span>(ll i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">            ll u=po[i].second,w=po[i].first;</span><br><span class="line">            <span class="keyword">for</span>(ll j=head[u];j;j=nex[j])&#123;</span><br><span class="line">                ll v=to[j];</span><br><span class="line">                <span class="keyword">if</span>(var[v]&gt;w)  <span class="keyword">continue</span>;</span><br><span class="line">                ll fu=<span class="built_in">found</span>(u),fv=<span class="built_in">found</span>(v);</span><br><span class="line">                fa[fv]=fu;d[fv]=<span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(ll i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">            <span class="built_in">found</span>(i);</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;%lld\n&quot;</span>,d[i]+<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></div></figure>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://Marhoosh.github.io">Marhoosh</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://marhoosh.github.io/2021/08/26/%E5%B9%B6%E6%9F%A5%E9%9B%86/">https://marhoosh.github.io/2021/08/26/%E5%B9%B6%E6%9F%A5%E9%9B%86/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://marhoosh.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2021/08/26/%E5%B0%BA%E5%8F%96/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">尺取</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2021/08/26/%E5%8D%95%E8%B0%83%E9%98%9F%E5%88%97%E3%80%81%E6%A0%88/"><span class="paginator-prev__text">单调队列、栈</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="gitalk-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A5%BD%E9%A2%98%E9%A2%98%E5%8D%95"><span class="toc-number">1.</span> <span class="toc-text">
+          好题题单</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B9%B6%E6%9F%A5%E9%9B%86"><span class="toc-number">2.</span> <span class="toc-text">
+          并查集</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%99%AE%E9%80%9A%E5%B9%B6%E6%9F%A5%E9%9B%86"><span class="toc-number">2.1.</span> <span class="toc-text">
+          普通并查集</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%A6%E6%9D%83%E5%B9%B6%E6%9F%A5%E9%9B%86"><span class="toc-number">2.2.</span> <span class="toc-text">
+          带权并查集</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%8F%E5%85%B8%E9%A2%98%E5%9E%8B1"><span class="toc-number">2.3.</span> <span class="toc-text">
+          经典题型1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%8F%E5%85%B8%E9%A2%98%E5%9E%8B2"><span class="toc-number">2.4.</span> <span class="toc-text">
+          经典题型2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%81%B5%E6%B4%BB%E8%BF%90%E7%94%A8%EF%BC%88%E5%B8%A6%E6%9D%83%E5%B9%B6%E6%9F%A5%E9%9B%86-hash%EF%BC%89"><span class="toc-number">2.5.</span> <span class="toc-text">
+          灵活运用（带权并查集+hash）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%81%B5%E6%B4%BB%E8%BF%90%E7%94%A8%EF%BC%88%E8%B4%AA%E5%BF%83-%E5%B9%B6%E6%9F%A5%E9%9B%86%EF%BC%89"><span class="toc-number">2.6.</span> <span class="toc-text">
+          灵活运用（贪心+并查集）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%81%B5%E6%B4%BB%E8%BF%90%E7%94%A8%EF%BC%88%E8%BF%9E%E9%80%9A%E5%9D%97%EF%BC%8C%E5%B9%B6%E6%9F%A5%E9%9B%86%EF%BC%89"><span class="toc-number">2.7.</span> <span class="toc-text">
+          灵活运用（连通块，并查集）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%A6%E6%9D%83%E5%B9%B6%E6%9F%A5%E9%9B%86%E5%A5%BD%E9%A2%98"><span class="toc-number">2.8.</span> <span class="toc-text">
+          带权并查集好题</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/uploads/男4.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">夸父逐日，尽志也</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/Marhoosh/" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">39</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">0</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">14</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2021</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>Marhoosh</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.4.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.6.2</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__info">访问人数</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__info">浏览总量</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="搜索文章（支持多关键词，请用空格分隔）"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script>function initSearch() {
+  var isXML = true;
+  var search_path = 'search.json';
+
+  if (!search_path) {
+    search_path = 'search.xml';
+  } else if (/json$/i.test(search_path)) {
+    isXML = false;
+  }
+
+  var path = '/' + search_path;
+  $.ajax({
+    url: path,
+    dataType: isXML ? 'xml' : 'json',
+    async: true,
+    success: function (res) {
+      var datas = isXML ? $('entry', res).map(function () {
+        // 将 XML 转为 JSON
+        return {
+          title: $('title', this).text(),
+          content: $('content', this).text(),
+          url: $('url', this).text()
+        };
+      }).get() : res;
+      var $input = $('.search-input input');
+      var $result = $('.search-results');
+      // 搜索对象（标题、内容）的权重，影响显示顺序
+      var WEIGHT = { title: 100, content: 1 };
+      var searchPost = function () {
+        var searchText = $input.val().toLowerCase().trim();
+        // 根据空白字符分隔关键字
+        var keywords = searchText.split(/[\s]+/);
+        // 搜索结果
+        var matchPosts = [];
+
+        // 有多个关键字时，将原文字整个保存下来
+        if (keywords.length > 1) {
+          keywords.push(searchText);
+        }
+        // 防止未输入字符时搜索
+        if (searchText.length > 0) {
+          datas.forEach(function (data) {
+            var isMatch  = false;
+            // 没有标题的文章使用预设的 i18n 变量代替
+            var title = (data.title && data.title.trim()) || '[ 文章无标题 ]';
+            var titleLower = title && title.toLowerCase();
+            // 删除 HTML 标签 和 所有空白字符
+            var content = data.content && data.content.replace(/<[^>]+>/g, '');
+            var contentLower = content && content.toLowerCase();
+            // 删除重复的 /
+            var postURL = data.url && decodeURI(data.url).replace(/\/{2,}/g, '/');
+            // 标题中匹配到的关键词
+            var titleHitSlice = [];
+            // 内容中匹配到的关键词
+            var contentHitSlice = [];
+
+            keywords.forEach(function (keyword) {
+              /**
+              * 获取匹配的关键词的索引
+              * @param {String} keyword 要匹配的关键字
+              * @param {String} text 原文字
+              * @param {Boolean} caseSensitive 是否区分大小写
+              * @param {Number} weight 匹配对象的权重。权重大的优先显示
+              * @return {Array}
+              */
+              function getIndexByword (word, text, caseSensitive, weight) {
+                if (!word || !text) {
+                  return [];
+                };
+
+                var startIndex = 0; // 每次匹配的开始索引
+                var index = -1;     // 匹配到的索引值
+                var result = [];    // 匹配结果
+
+                if (!caseSensitive) {
+                  word = word.toLowerCase();
+                  text = text.toLowerCase();
+                }
+
+                while((index = text.indexOf(word, startIndex)) !== -1) {
+                  var hasMatch = false;
+                  // 索引位置相同的关键词，保留长度较长的
+                  titleHitSlice.forEach(function (hit) {
+                    if (hit.index === index && hit.word.length < word.length) {
+                      hit.word = word;
+                      hasMatch = true;
+                    }
+                  });
+                  startIndex = index + word.length;
+                  !hasMatch && result.push({ index: index, word: word, weight: weight });
+                }
+                return result;
+              }
+              titleHitSlice = titleHitSlice.concat(getIndexByword(keyword, titleLower, false, WEIGHT.title));
+              contentHitSlice = contentHitSlice.concat(getIndexByword(keyword, contentLower, false, WEIGHT.content));
+            });
+
+            var hitTitle = titleHitSlice.length;
+            var hitContent = contentHitSlice.length;
+
+            if (hitTitle > 0 || hitContent > 0) {
+              isMatch = true;
+            }
+            if (isMatch) {
+              ;[titleHitSlice, contentHitSlice].forEach(function (hit) {
+                // 按照匹配文字的索引的递增顺序排序
+                hit.sort(function (left, right) {
+                  return left.index - right.index;
+                });
+              });
+              /**
+              * 给文本中匹配到的关键词添加标记，从而进行高亮显示
+              * @param {String} text 原文本
+              * @param {Array} hitSlice 匹配项的索引信息
+              * @param {Number} start 开始索引
+              * @param {Number} end 结束索引
+              * @return {String}
+              */
+              function highlightKeyword (text, hitSlice, start, end) {
+                if (!text || !hitSlice || !hitSlice.length) {
+                  return;
+                }
+
+                var result = '';
+                var startIndex = start;
+                var endIndex = end;
+                hitSlice.forEach(function (hit) {
+                  if (hit.index < startIndex) {
+                    return;
+                  }
+
+                  var hitWordEnd = hit.index + hit.word.length;
+                  result += text.slice(startIndex, hit.index);
+                  result += '<b>' + text.slice(hit.index, hitWordEnd) + '</b>';
+                  startIndex = hitWordEnd;
+                });
+                result += text.slice(startIndex, endIndex);
+                return result;
+              }
+
+              var postData = {};
+              // 文章总的搜索权重
+              var postWeight = titleHitSlice.length * WEIGHT.title + contentHitSlice.length * WEIGHT.content;
+              // 标记匹配关键词后的标题
+              var postTitle = highlightKeyword(title, titleHitSlice, 0, title.length) || title;
+              // 标记匹配关键词后的内容
+              var postContent;
+              // 显示内容的长度
+              var SHOW_WORD_LENGTH = 200;
+              // 命中关键词前的字符显示长度
+              var SHOW_WORD_FRONT_LENGTH = 20;
+              var SHOW_WORD_END_LENGTH = SHOW_WORD_LENGTH - SHOW_WORD_FRONT_LENGTH;
+
+              // 截取匹配的第一个字符，前后共 200 个字符来显示
+              if (contentHitSlice.length > 0) {
+                var firstIndex = contentHitSlice[0].index;
+                var start = firstIndex > SHOW_WORD_FRONT_LENGTH ? firstIndex - SHOW_WORD_FRONT_LENGTH : 0;
+                var end = firstIndex + SHOW_WORD_END_LENGTH;
+                postContent = highlightKeyword(content, contentHitSlice, start, end);
+              } else { // 未匹配到内容，直接截取前 200 个字符来显示
+                postContent = content.slice(0, SHOW_WORD_LENGTH);
+              }
+              postData.title = postTitle;
+              postData.content = postContent;
+              postData.url = postURL;
+              postData.weight = postWeight;
+              matchPosts.push(postData);
+            }
+          });
+        }
+
+        var resultInnerHtml = '';
+        if (matchPosts.length) {
+          // 按权重递增的顺序排序，使权重大的优先显示
+          matchPosts.sort(function (left, right) {
+            return right.weight - left.weight;
+          });
+          resultInnerHtml += '<ul>';
+          matchPosts.forEach(function (post) {
+            resultInnerHtml += '<li><a class="search-results-title" href="' + post.url + '">';
+            resultInnerHtml += post.title;
+            resultInnerHtml += '</a><div class="search-results-content">';
+            resultInnerHtml += post.content;
+            resultInnerHtml += '</div></li>';
+          });
+          resultInnerHtml += '</ul>';
+        } else {
+          resultInnerHtml += '<div class="search-results-none"><i class="far fa-meh"></i></div>';
+        }
+        $result.html(resultInnerHtml);
+      };
+      $input.on('input', searchPost);
+      $input.on('keyup', function (e) {
+        if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
+          searchPost();
+        }
+      });
+    }
+  });
+}
+
+function closeSearch () {
+  $('body').css({ overflow: 'auto' });
+  $('.search-popup').css({ display: 'none' });
+  $('.search-mask').css({ display: 'none' });
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+  Stun.utils.pjaxReloadLocalSearch = function () {
+    $('.header-nav-search').on('click', function (e) {
+      e.stopPropagation();
+      $('body').css('overflow', 'hidden');
+      $('.search-popup')
+        .velocity('stop')
+        .velocity('transition.expandIn', {
+          duration: 300,
+          complete: function () {
+            $('.search-popup input').focus();
+          }
+        });
+      $('.search-mask')
+        .velocity('stop')
+        .velocity('transition.fadeIn', {
+          duration: 300
+        });
+
+      initSearch();
+    });
+    $('.search-mask, .search-close').on('click', function () {
+      closeSearch();
+    });
+    $(document).on('keydown', function (e) {
+      // Escape <=> 27
+      if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+        closeSearch();
+      }
+    });
+  };
+
+  Stun.utils.pjaxReloadLocalSearch();
+}, false);
+
+function safeOpenUrl(url) {
+  var newTab = window.open();
+  newTab.opener = null;
+  newTab.location = url;
+}
+
+function extSearch(engine) {
+  var engines = {
+    google: 'https://www.google.com/search?q=',
+    bing: 'https://cn.bing.com/search?q=',
+    baidu: 'https://www.baidu.com/s?ie=UTF-8&wd=',
+  };
+  var host = window.location.host;
+  var query = $('.search-input input').val().toLowerCase().trim();
+  var uri = engines[engine] + query + ' site:' + host;
+
+  if (query) {
+    safeOpenUrl(uri);
+  } else {
+    Stun.utils.popAlert('warning', '请输入字符');
+  }
+}
+
+var assistSearchList = window.CONFIG.assistSearch;
+
+if (Array.isArray(assistSearchList)) {
+  assistSearchList.forEach(function (name) {
+    document.querySelector('.search-btns-item--' + name).addEventListener('click', function () {
+      extSearch(name);
+    }, false);
+  });
+}</script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script><script src="https://cdn.jsdelivr.net/npm/js-md5@latest/src/md5.min.js"></script><script>function loadGitalk () {
+  if (!document.getElementById('gitalk-container')) {
+    return;
+  }
+
+  var gitalk = new Gitalk({
+    id: md5(window.location.pathname.slice(1)),
+    clientID: 'dfb2efe6b7d9077b91a1',
+    clientSecret: '57ed4561148ba56e289a26cfbfc7fecc9610be2e',
+    repo: 'Marhoosh.github.io',
+    owner: 'Marhoosh',
+    admin: ['Marhoosh'],
+    distractionFreeMode: 'true',
+    language: 'zh-CN'
+  });
+  gitalk.render('gitalk-container');
+}
+
+if (false) {
+  loadGitalk();
+} else {
+  window.addEventListener('DOMContentLoaded', loadGitalk, false);
+}</script><script src="/js/utils.js?v=2.6.2"></script><script src="/js/stun-boot.js?v=2.6.2"></script><script src="/js/scroll.js?v=2.6.2"></script><script src="/js/header.js?v=2.6.2"></script><script src="/js/sidebar.js?v=2.6.2"></script><script type="application/json" src="/search.json"></script></body></html>

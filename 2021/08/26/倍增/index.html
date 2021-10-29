@@ -1,0 +1,425 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.6.2" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.6.2" type="image/png" sizes="32x32"><meta name="description" content="倍增？二分？递归？递推！">
+<meta property="og:type" content="article">
+<meta property="og:title" content="倍增">
+<meta property="og:url" content="https://marhoosh.github.io/2021/08/26/%E5%80%8D%E5%A2%9E/index.html">
+<meta property="og:site_name" content="Marhoosh&#39;S Blog">
+<meta property="og:description" content="倍增？二分？递归？递推！">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-08-26T15:29:05.000Z">
+<meta property="article:modified_time" content="2021-09-20T09:04:14.548Z">
+<meta property="article:author" content="Marhoosh">
+<meta property="article:tag" content="基本算法">
+<meta property="article:tag" content="数据结构">
+<meta name="twitter:card" content="summary"><title>倍增 | Marhoosh'S Blog</title><link ref="canonical" href="https://marhoosh.github.io/2021/08/26/%E5%80%8D%E5%A2%9E/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.6.2"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":false,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"carbon","highlight":"ocean","wordWrap":true},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/friendlinks/"><span class="header-nav-menu-item__icon"><i class="fas fa-link"></i></span><span class="header-nav-menu-item__text">友链</span></a></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">倍增</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2021-08-26</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2021-09-20</span></span><span class="post-meta-item post-meta-item--visitors"><span class="post-meta-item__icon"><i class="fas fa-eye"></i></span><span class="post-meta-item__info">阅读次数</span><span class="post-meta-item__value" id="busuanzi_value_page_pv"></span></span></div></header><div class="post-body"><p>倍增？二分？递归？递推！</p>
+<span id="more"></span> 
+
+
+        <h1 id="题单"   >
+          <a href="#题单" class="heading-link"><i class="fas fa-link"></i></a><a href="#题单" class="headerlink" title="题单"></a>题单</h1>
+      <ul>
+<li><input disabled="" type="checkbox"> CodeForces - 359D  (-[x]打钩方法)</li>
+</ul>
+
+        <h1 id="倍增法"   >
+          <a href="#倍增法" class="heading-link"><i class="fas fa-link"></i></a><a href="#倍增法" class="headerlink" title="倍增法"></a>倍增法</h1>
+      <p>本质：吾以为倍增法本质就是将二分的过程存了下来，二分本来是个递归的过程嘛，倍增法就是将其变成递推了。比如二分可以将其划为两个子问题求解，这两个子问题可以是重复性贡献，也可以是不重复性贡献的，然后再用递推式将其求出来。更详细的理解可以见例题<br>倍增法本身的复杂度是O(n<em>logn)的，然后可以O(1)的查询，所以倍增法适用于多次询问的情况，如果只有1次询问的话，就没必要倍增了，直接算就行了。但倍增本身复杂度也不高，O(n</em>logn)，也可以用来解决1次询问情况，不过就是有些大材小用了。</p>
+
+        <h2 id="ST表"   >
+          <a href="#ST表" class="heading-link"><i class="fas fa-link"></i></a><a href="#ST表" class="headerlink" title="ST表"></a>ST表</h2>
+      <p>模板</p>
+<figure class="highlight cpp"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> ll;</span><br><span class="line"><span class="keyword">const</span> ll maxn=<span class="number">1e5</span>+<span class="number">11</span>;</span><br><span class="line">ll n,ans[maxn*<span class="number">10</span>],st[maxn][<span class="number">17</span>];<span class="comment">//2的17次方比1e5大一点</span></span><br><span class="line"><span class="comment">//求区间最大值</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">()</span></span>&#123;<span class="comment">//st表初始化</span></span><br><span class="line">    <span class="keyword">for</span>(ll j=<span class="number">1</span>;(<span class="number">1</span>&lt;&lt;j)&lt;=n;j++)</span><br><span class="line">        <span class="keyword">for</span>(ll i=<span class="number">1</span>;i+(<span class="number">1</span>&lt;&lt;j)<span class="number">-1</span>&lt;=n;i++)</span><br><span class="line">            st[i][j]=<span class="built_in">max</span>(st[i][j<span class="number">-1</span>],st[i+(<span class="number">1</span>&lt;&lt;j<span class="number">-1</span>)][j<span class="number">-1</span>]);</span><br><span class="line"><span class="comment">//划分为两个子问题求解，这两个子问题是可重复性贡献的</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function">ll <span class="title">query</span><span class="params">(ll l,ll r)</span></span>&#123;<span class="comment">//区间[l,r],注意是闭区间，返回区间[l,r]的最大值</span></span><br><span class="line">    ll k=<span class="number">0</span>;<span class="keyword">while</span>(l+(<span class="number">1</span>&lt;&lt;k+<span class="number">1</span>)<span class="number">-1</span>&lt;r)k++;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">max</span>(st[l][k],st[r-(<span class="number">1</span>&lt;&lt;k)+<span class="number">1</span>][k]);<span class="comment">//不直接找一个大区间覆盖而是要找两个小区间合并是因为大区间可能超过了st表的长度</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+
+        <h3 id="ST表-二维RMQ"   >
+          <a href="#ST表-二维RMQ" class="heading-link"><i class="fas fa-link"></i></a><a href="#ST表-二维RMQ" class="headerlink" title="ST表-二维RMQ"></a>ST表-二维RMQ</h3>
+      <p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/qq_42569807/article/details/89408623" >ST表-二维RMQ</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h2 id="LCA-最近公共祖先"   >
+          <a href="#LCA-最近公共祖先" class="heading-link"><i class="fas fa-link"></i></a><a href="#LCA-最近公共祖先" class="headerlink" title="LCA-最近公共祖先"></a>LCA-最近公共祖先</h2>
+      <p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3379" >P3379 【模板】最近公共祖先（LCA）</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span><br>模板<br>这个模板注意下dfs里面fa初始化的问题，要么直接设置为常数，要么就改为i&lt;=lg2[d[now]-1],然后再在lca函数的if改成if (fa[x][k] != fa[y][k] &amp;&amp; k &lt;= lg2[d[x] - 1])  </p>
+<figure class="highlight cpp"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*** </span></span><br><span class="line"><span class="comment"> * @Practice Win</span></span><br><span class="line"><span class="comment"> * 洛谷 P3379 【模板】最近公共祖先（LCA）</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> comment(linker, <span class="meta-string">&quot;/STACK:102400000,102400000&quot;</span>)<span class="comment">//解决递归函数多次调用栈溢出问题</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> Debug(x) cout&lt;&lt;#x&lt;&lt;<span class="meta-string">&#x27;:&#x27;</span>&lt;&lt;x&lt;&lt;endl</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INF 0x7fffffff<span class="comment">//10^9级别，不到2^32</span></span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> ll;</span><br><span class="line"><span class="keyword">const</span> ll maxn=<span class="number">5e5</span>+<span class="number">11</span>;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Edge</span>&#123;</span></span><br><span class="line">	ll to,next;</span><br><span class="line">&#125;edge[maxn*<span class="number">2</span>];<span class="comment">//edge的边数要乘2</span></span><br><span class="line">ll head[maxn],d[maxn],fa[maxn][<span class="number">22</span>],lg2[maxn],tmp=<span class="number">1</span>;</span><br><span class="line"><span class="comment">//d[i]是结点i的深度，fa[i][j]表示i的第2的j次方父结点，lg2[i]是log2(i)取整数</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">(ll u,ll v)</span></span>&#123;</span><br><span class="line">	edge[tmp].to=v;</span><br><span class="line">	edge[tmp].next=head[u];</span><br><span class="line">	head[u]=tmp++;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dfs</span><span class="params">(ll now,ll far)</span></span>&#123;<span class="comment">//预处理d与fa数组</span></span><br><span class="line">	fa[now][<span class="number">0</span>]=far,d[now]=d[far]+<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span>(ll i=<span class="number">1</span>;i&lt;=<span class="number">20</span>;i++)  fa[now][i]=fa[fa[now][i<span class="number">-1</span>]][i<span class="number">-1</span>];<span class="comment">//这个常数20对应的是1e6!!!!!!!!!!</span></span><br><span class="line">	<span class="comment">//不用d[now]是因为多样例根节点不同的时候，因为在lca那个if里面k可能会比较大，然后指向不一样</span></span><br><span class="line">	<span class="keyword">for</span>(ll i=head[now];i;i=edge[i].next)&#123;</span><br><span class="line">		<span class="keyword">if</span>(edge[i].to!=far)   <span class="built_in">dfs</span>(edge[i].to,now);<span class="comment">//这里记得加个条件，不能到父节点</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">ll <span class="title">lca</span><span class="params">(ll x,ll y)</span></span>&#123;<span class="comment">//输入两个结点编号，x与y，返回x和y的lca</span></span><br><span class="line">	<span class="keyword">if</span>(d[x]&lt;d[y])  <span class="built_in">swap</span>(x,y);</span><br><span class="line">	<span class="keyword">while</span>(d[x]&gt;d[y])  x=fa[x][lg2[d[x]-d[y]]];<span class="comment">//这里要while，因为这里的lg2不是精确值</span></span><br><span class="line">	<span class="comment">//这里re找了我好久错误！！！原来不是数组开太大了，也不是数组开太小了，是数组里的结果有负数！！！</span></span><br><span class="line">	<span class="keyword">if</span>(x==y)  <span class="keyword">return</span> x;</span><br><span class="line">	<span class="keyword">for</span>(ll k=lg2[d[x]<span class="number">-1</span>];k&gt;=<span class="number">0</span>;k--)&#123;</span><br><span class="line">		<span class="keyword">if</span>(fa[x][k]!=fa[y][k])&#123;<span class="comment">//找到lca的下一层</span></span><br><span class="line">			x=fa[x][k],y=fa[y][k];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> fa[x][<span class="number">0</span>];</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(ll i=<span class="number">2</span>;i&lt;maxn;i++)  lg2[i]=lg2[i/<span class="number">2</span>]+<span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    ios::<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>);</span><br><span class="line">    cin.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">	ll n,m,s;  cin&gt;&gt;n&gt;&gt;m&gt;&gt;s;<span class="comment">//n个 结点,m次询问，以s为根节点</span></span><br><span class="line">	<span class="built_in">init</span>();</span><br><span class="line">	<span class="keyword">for</span>(ll i=<span class="number">1</span>,u,v;i&lt;=n<span class="number">-1</span>;i++)&#123;</span><br><span class="line">		cin&gt;&gt;u&gt;&gt;v;  <span class="built_in">add</span>(u,v);<span class="built_in">add</span>(v,u);<span class="comment">//无向图！！！</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">dfs</span>(s,<span class="number">0</span>);</span><br><span class="line">	<span class="keyword">for</span>(ll i=<span class="number">1</span>,u,v;i&lt;=m;i++)&#123;</span><br><span class="line">		cin&gt;&gt;u&gt;&gt;v;  cout&lt;&lt;<span class="built_in">lca</span>(u,v)&lt;&lt;endl;</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></div></figure>
+
+        <h2 id="RMQ灵活运用，求区间最常出现数字的数量"   >
+          <a href="#RMQ灵活运用，求区间最常出现数字的数量" class="heading-link"><i class="fas fa-link"></i></a><a href="#RMQ灵活运用，求区间最常出现数字的数量" class="headerlink" title="RMQ灵活运用，求区间最常出现数字的数量"></a>RMQ灵活运用，求区间最常出现数字的数量</h2>
+      <p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://vjudge.net/problem/POJ-3368" >Frequent values POJ - 3368</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span><br>题意：给一个数列n，n是非递减序列，有重复数字。有q次询问，n,q&lt;1e5，每次问在区间[l,r]内最经常出现的数字的数量。<br>思路：将连续相同的数字看成一个块，预处理出每个块含有的数字的数量，以及块的右坐标。这个预处理出来的值可以封装成结构体减少空间。也可以直接在原数组的基础上，加两个数组num[i]表示i所处块含有的数字数量，pos[i]表示i映射到st表中的坐标。一开始我是用的第一个方法，麻烦了些，看了别人的题解知道第二个方法，确实方便些，直接以空间换时间，反正ACM竞赛嘛。对于每次查询，可以将答案分成三部分，左边残余块，中间连续一整块，用RMQ处理，右边残余块，取三者最大值即可。<br>踩坑：<strong>这个方法不适用于所有情况，就要分类讨论</strong>，不要怕麻烦，如果这个方法不适用于所有情况，那就得分类讨论，不然偷懒的话，找BUG的时间你知道的，都够再写道题了。比如这里很明显，不是每次都有中间区间，如果每次都按有中间区间来算，就错了。可能l,r在一个块内，没有中间区间，l,r在两个相邻的块，也没有中间区间，当l,r中间隔一个块时，才有中间区间。然后这里又设计左右坐标的加减，没有一个统一的方法处理，很明显需要分类讨论。</p>
+
+        <h2 id="LCA灵活运用，求树上两点间距离"   >
+          <a href="#LCA灵活运用，求树上两点间距离" class="heading-link"><i class="fas fa-link"></i></a><a href="#LCA灵活运用，求树上两点间距离" class="headerlink" title="LCA灵活运用，求树上两点间距离"></a>LCA灵活运用，求树上两点间距离</h2>
+      <p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://vjudge.net/problem/HDU-2586" >How far away ？ HDU - 2586</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span><br>题意：给你一个无向树，求任意两点间距离，多次询问。<br>思路：统一以某个点为根节点，记录每个点到根节点的距离，两点之间距离就等于lca到两点的距离之和。</p>
+
+        <h2 id="区间覆盖，倍增法好题"   >
+          <a href="#区间覆盖，倍增法好题" class="heading-link"><i class="fas fa-link"></i></a><a href="#区间覆盖，倍增法好题" class="headerlink" title="区间覆盖，倍增法好题"></a>区间覆盖，倍增法好题</h2>
+      <p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://codeforces.com/contest/1175/problem/E" >Minimal Segment Cover</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span><br>题意：给你n个区间，有m次询问，n,m&lt;2e5,每次询问区间A最少需要几个区间就能被完全覆盖，若不存在则输出-1。<br>思路：这道题先要预处理一下，就很好做了，先预处理出以每个点为起点，只用一个区间能到达的最右端点。然后我们就会想知道，每个起点用2个区间，3个区间，n个区间向右最远能到哪。因为n最大为2e5，所以最多可以用2e5个区间，这个时候就要用上倍增的思想了，用dp[i][j]表示起点i用2^j个区间所能到达的最右端点，则dp[i][j]=dp[    dp[i][j-1]   ][j-1]。</p>
+<p><strong>代码有些细节</strong>要注意：</p>
+<figure class="highlight cpp"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(ll i=<span class="number">1</span>,l,r;i&lt;=n;i++)&#123;</span><br><span class="line">    cin&gt;&gt;l&gt;&gt;r;v[l]=<span class="built_in">max</span>(v[l],r);maxx=<span class="built_in">max</span>(maxx,r);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>(ll i=<span class="number">0</span>;i&lt;=maxx;i++)&#123;</span><br><span class="line">    v[i]=<span class="built_in">max</span>(v[i<span class="number">-1</span>],v[i]);</span><br><span class="line">    <span class="comment">//因为v[i-1]也可能包含i这个点</span></span><br><span class="line">    dp[i][<span class="number">0</span>]=v[i];</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>(ll j=<span class="number">1</span>;j&lt;=<span class="number">20</span>;j++)&#123;</span><br><span class="line">    <span class="keyword">for</span>(ll i=<span class="number">0</span>;i&lt;=maxx;i++)&#123;</span><br><span class="line">        dp[i][j]=dp[dp[i][j<span class="number">-1</span>]][j<span class="number">-1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>(ll i=<span class="number">1</span>,l,r;i&lt;=m;i++)&#123;</span><br><span class="line">    cin&gt;&gt;l&gt;&gt;r;</span><br><span class="line">    ll ans=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(ll j=<span class="number">20</span>;j&gt;=<span class="number">0</span>;j--)&#123;</span><br><span class="line">        <span class="keyword">if</span>(dp[l][j]&lt;r)&#123;</span><br><span class="line">    <span class="comment">//跳到r的上个点，来保证区间数最少</span></span><br><span class="line">            ans+=(<span class="number">1</span>&lt;&lt;j);</span><br><span class="line">            l=dp[l][j];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(v[l]&gt;=r)  cout&lt;&lt;ans+<span class="number">1</span>&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">else</span>  cout&lt;&lt;<span class="number">-1</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+
+
+        <h2 id="树上与a，b距离相等的点有多少个"   >
+          <a href="#树上与a，b距离相等的点有多少个" class="heading-link"><i class="fas fa-link"></i></a><a href="#树上与a，b距离相等的点有多少个" class="headerlink" title="树上与a，b距离相等的点有多少个"></a>树上与a，b距离相等的点有多少个</h2>
+      <p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://codeforces.com/contest/519/problem/E" >A and B and Lecture Rooms</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span><br>题意：如题，有多次询问<br>思路：size[i]存下子树i的规模，求得lca点下层的两个点a,b，答案就为<br>size[lca]-size[a]-size[b]，答案具体的加减法不是这样，这只是表达个大概意思。</p>
+
+        <h2 id="a中一区间是否存在子序列为p的一个排列-倍增好题"   >
+          <a href="#a中一区间是否存在子序列为p的一个排列-倍增好题" class="heading-link"><i class="fas fa-link"></i></a><a href="#a中一区间是否存在子序列为p的一个排列-倍增好题" class="headerlink" title="a中一区间是否存在子序列为p的一个排列-倍增好题"></a>a中一区间是否存在子序列为p的一个排列-倍增好题</h2>
+      <p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://codeforces.com/contest/1143/problem/E" >Lynyrd Skynyrd</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span><br>题意：a,p,q&lt;2e5，a是数列a长度，p是排列p长度，q是询问次数。子序列是指a的按相对顺序排列的序列，不是子串。p的一个排列是指循环排列。<br>思路：懒得写了，看这篇吧，<strong>注意其中的倍增思想</strong><br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/qq_43202683/article/details/89220015" >题解</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span><br>解释一下题解中第二个3，其前缀是1，1在a中是第二个位置。这样做是因为我们要贪心，找a中距离Ai最近的那个数组成排列。</p>
+
+        <h2 id="树中a的k级子孙有多少个-二分好题"   >
+          <a href="#树中a的k级子孙有多少个-二分好题" class="heading-link"><i class="fas fa-link"></i></a><a href="#树中a的k级子孙有多少个-二分好题" class="headerlink" title="树中a的k级子孙有多少个-二分好题"></a>树中a的k级子孙有多少个-二分好题</h2>
+      <p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://codeforces.com/contest/208/problem/E" >Blood Cousins</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span><br>当然也可以树上启发式合并来做，但我不会，下次再学<br>思路：对于求某个点的k级子孙，可以把树的每个结点按dfs序编号，记录每种深度含有的编号，记录每个结点，其子树的头个编号L[i]和最后一个编号R[i]。那么求其k级子孙，将其对应深度d，那么在所有深度为d的结点中，因为其结点编号按升序排序，所以可以二分的找到L[i]和R[i]的位置，两个位置之间的数量就为其k级子孙个数。</p>
+
+        <h2 id="3⭐ST表-GCD-二分-线段树慢"   >
+          <a href="#3⭐ST表-GCD-二分-线段树慢" class="heading-link"><i class="fas fa-link"></i></a><a href="#3⭐ST表-GCD-二分-线段树慢" class="headerlink" title="3⭐ST表-GCD-二分-线段树慢"></a>3⭐ST表-GCD-二分-线段树慢</h2>
+      <p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="http://codeforces.com/problemset/problem/359/D" >Pair of Numbers</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span><br>题意：给一个长度为3e5的数列，记区间a为[l,r]，在区间a内存在一个数，使得所有区间a内的数都能整除它，求最长的区间a，若存在多个，则按左端点顺序从低到高输出。<br>思路：<br>1.朴素简单做法<br>区间a内所有数都能整除它，那它一定是这个区间内的最小数。对于区间内一个数a1，我们求得以其为最小值的整除区间的最大长度，[l,r]，下次枚举，我们可以直接从a[r+1]开始枚举，因为对于a1到ar之间的数，他们的左端点最多为a1，右端点最多为ar，区间长度不会比a1的长。<br>2.二分-ST表做法<br>一开始想用线段树做，但是没考虑gcd的复杂度也是logn，然后就超时了，呜呜呜。用ST表就不会，因为ST表把每次GCD的值保存了下来，<strong>这里可以仔细考虑下线段树和ST表的复杂度差别。然后我一开始用ST表写，是没想到二分长度l的，我是想着一边建表，一边update，但是这样子模拟很麻烦，不好写代码，虽然复杂度肯定比较低，但是没二分来的逻辑清晰，代码好写，况且二分的复杂度是够的！！！</strong>二分的具体做法，在这里我们建两个ST表，一个最小值的，一个gcd的，如果gcd==minn，就是可以的，然后二分长度，对于每个长度，我们枚举n个数。所以复杂度是O(n*logn)的。</p>
+
+        <h2 id="倍增，贪心，超时？"   >
+          <a href="#倍增，贪心，超时？" class="heading-link"><i class="fas fa-link"></i></a><a href="#倍增，贪心，超时？" class="headerlink" title="倍增，贪心，超时？"></a>倍增，贪心，超时？</h2>
+      <p>题目大意：给出一棵初始时只有一个点的树，每个点都有两个值:ai,ci,分别代表黄金的个数和单价。需要执行m&lt;3e5次操作，每次操作分为两种类型：<br>1 pi ai ci  添加一个新点,pi为其父节点,保证ci&gt;c(pi)<br>2 v w :需要从点v到根节点的这条路径上采集w个单位的黄金，问如何采集才能使得总花费最少<br>注意对于每次操作2是会叠加的,即采集的黄金会拿走掉，下次能拿的黄金就变少了，且强制在线输出。</p>
+<details>
+  <summary>点击查看思路</summary>
+  <pre><code>  
+
+<p>注意到ci&gt;c(pi),就很简单了，就贪心，每次从根节点开始拿即可，关键是找到离根节点最近的非空结点。<strong>但是我当时想的是一个一个拿会不会超时，如果真要卡的话，确实能卡掉，但是，现在一想，这样的数据造不出来！！！再者，考试的时候也可以试一试嘛，万一数据水了呢？超时就再说嘛，试了还有机会，不试就肯定没机会</strong>那么直接简单倍增+贪心就可以了。</p>
+<figure class="highlight cpp"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">* @Author: Marhoosh</span></span><br><span class="line"><span class="comment">* @Date:   2021-09-04 21:45:32</span></span><br><span class="line"><span class="comment">* @Last Modified by:   Marhoosh</span></span><br><span class="line"><span class="comment">* @Last Modified time: 2021-09-17 20:13:34</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> comment(linker, <span class="meta-string">&quot;/STACK:102400000,102400000&quot;</span>)</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> Debug(x) cout&lt;&lt;#x&lt;&lt;<span class="meta-string">&#x27;:&#x27;</span>&lt;&lt;x&lt;&lt;endl</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INF 0x7fffffff</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> ll;</span><br><span class="line"><span class="keyword">const</span> ll maxn=<span class="number">3e5</span>+<span class="number">11</span>;</span><br><span class="line">ll fa[maxn][<span class="number">22</span>],a[maxn],c[maxn];</span><br><span class="line"><span class="function">ll <span class="title">found</span><span class="params">(ll x)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(ll i=<span class="number">20</span>;i&gt;=<span class="number">0</span>;i--)&#123;</span><br><span class="line">        <span class="keyword">if</span>(a[fa[x][i]])  x=fa[x][i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    ios::<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>);</span><br><span class="line">    cin.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">    ll q;cin&gt;&gt;q&gt;&gt;a[<span class="number">0</span>]&gt;&gt;c[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">for</span>(ll i=<span class="number">1</span>,op,vi,wi;i&lt;=q;i++)&#123;</span><br><span class="line">        cin&gt;&gt;op;</span><br><span class="line">        <span class="keyword">if</span>(op==<span class="number">1</span>)&#123;</span><br><span class="line">            cin&gt;&gt;fa[i][<span class="number">0</span>]&gt;&gt;a[i]&gt;&gt;c[i];</span><br><span class="line">            <span class="keyword">for</span>(ll j=<span class="number">1</span>;j&lt;=<span class="number">20</span>;j++)  fa[i][j]=fa[fa[i][j<span class="number">-1</span>]][j<span class="number">-1</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            cin&gt;&gt;vi&gt;&gt;wi;ll ans1=<span class="number">0</span>,ans2=<span class="number">0</span>;</span><br><span class="line">            <span class="keyword">while</span>(a[vi]&amp;&amp;wi)&#123;</span><br><span class="line">                ll fv=<span class="built_in">found</span>(vi);</span><br><span class="line">                ll minn=<span class="built_in">min</span>(wi,a[fv]);</span><br><span class="line">                ans1+=minn;a[fv]-=minn;wi-=minn;</span><br><span class="line">                ans2+=minn*c[fv];</span><br><span class="line">            &#125;</span><br><span class="line">            cout&lt;&lt;ans1&lt;&lt;<span class="string">&quot; &quot;</span>&lt;&lt;ans2&lt;&lt;endl;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></div></figure>
+
+<p>  </code></pre></p>
+</details>
+
+
+        <h2 id="倍增-思维好题"   >
+          <a href="#倍增-思维好题" class="heading-link"><i class="fas fa-link"></i></a><a href="#倍增-思维好题" class="headerlink" title="倍增-思维好题"></a>倍增-思维好题</h2>
+      <p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://codeforces.com/problemset/problem/1335/F" >CodeForces 1335F</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.cnblogs.com/suxxsfe/p/12699630.html" >题意及思路转载</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>一开始自己想的是有多少个循环节，先用dfs遍历出有多少个循环节，然后再数出所有循环节内个数，即为可放机器人个数。然后再枚举每个为0的点，看他对应循环节的哪个位置。。。很明显，这么写就纯模拟，而且很复杂。<strong>然后因为我一直是按一个格子来思考，无论怎么想，都不会出正解。因为题目很明显表示出来格子之间是有影响的，不是相互独立的。如果我能够按两个格子一起走来思考，应该就不难想出来了。有些东西没考虑到，是不可能想出来的，比如这题不考虑其他格子的影响</strong></p>
+<figure class="highlight cpp"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">* @Author: Marhoosh</span></span><br><span class="line"><span class="comment">* @Date:   2021-07-22 10:27:29</span></span><br><span class="line"><span class="comment">* @Last Modified by:   Marhoosh</span></span><br><span class="line"><span class="comment">* @Last Modified time: 2021-09-20 16:42:51</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> comment(linker, <span class="meta-string">&quot;/STACK:102400000,102400000&quot;</span>)</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> Debug(x) cout&lt;&lt;#x&lt;&lt;<span class="meta-string">&#x27;:&#x27;</span>&lt;&lt;x&lt;&lt;endl</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INF 0x7fffffff</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> ll;</span><br><span class="line"><span class="keyword">const</span> ll maxn=<span class="number">1e6</span>+<span class="number">11</span>;</span><br><span class="line">ll st[maxn][<span class="number">22</span>],flag[maxn],cnt[maxn],d[<span class="number">111</span>],n,m;</span><br><span class="line"><span class="keyword">char</span> grac[maxn],gras[maxn];</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">()</span></span>&#123;</span><br><span class="line">    d[<span class="number">85</span>]=-m;d[<span class="number">82</span>]=<span class="number">1</span>;d[<span class="number">68</span>]=m;d[<span class="number">76</span>]=<span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">for</span>(ll i=<span class="number">1</span>;i&lt;=n*m;i++)  flag[i]=cnt[i]=<span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">out</span><span class="params">()</span></span>&#123;</span><br><span class="line">    ll ans1=<span class="number">0</span>,ans2=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(ll i=<span class="number">1</span>;i&lt;=n*m;i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(cnt[i]&gt;=<span class="number">1</span>)  ans1++;</span><br><span class="line">        <span class="keyword">if</span>(flag[i]==<span class="number">1</span>)  ans2++;</span><br><span class="line">    &#125;</span><br><span class="line">    cout&lt;&lt;ans1&lt;&lt;<span class="string">&quot; &quot;</span>&lt;&lt;ans2&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    ios::<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>);</span><br><span class="line">    cin.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">    ll ca;cin&gt;&gt;ca;</span><br><span class="line">    <span class="keyword">while</span>(ca--)&#123;</span><br><span class="line">        cin&gt;&gt;n&gt;&gt;m;</span><br><span class="line">        <span class="built_in">init</span>();</span><br><span class="line">        <span class="keyword">for</span>(ll i=<span class="number">1</span>;i&lt;=n*m;i++)  cin&gt;&gt;gras[i];</span><br><span class="line">        <span class="keyword">for</span>(ll i=<span class="number">1</span>;i&lt;=n*m;i++)&#123;</span><br><span class="line">            cin&gt;&gt;grac[i];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(ll i=<span class="number">1</span>;i&lt;=n*m;i++)&#123;</span><br><span class="line">            st[i][<span class="number">0</span>]=i+d[(ll)grac[i]];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(ll j=<span class="number">1</span>;j&lt;=<span class="number">20</span>;j++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(ll i=<span class="number">1</span>;i&lt;=n*m;i++)&#123;</span><br><span class="line">                st[i][j]=st[st[i][j<span class="number">-1</span>]][j<span class="number">-1</span>];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(ll i=<span class="number">1</span>;i&lt;=n*m;i++)&#123;</span><br><span class="line">            ll to=st[i][<span class="number">20</span>];</span><br><span class="line">            cnt[to]++;</span><br><span class="line">            <span class="keyword">if</span>(gras[i]==<span class="string">&#x27;0&#x27;</span>)  flag[to]=<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">out</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></div></figure>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://Marhoosh.github.io">Marhoosh</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://marhoosh.github.io/2021/08/26/%E5%80%8D%E5%A2%9E/">https://marhoosh.github.io/2021/08/26/%E5%80%8D%E5%A2%9E/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://marhoosh.github.io/tags/%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95/">基本算法</a></span><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://marhoosh.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2021/08/28/2015ICPCWorldFinal/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">2015ICPCWorldFinal</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2021/08/26/%E5%B0%BA%E5%8F%96/"><span class="paginator-prev__text">尺取</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="gitalk-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%A2%98%E5%8D%95"><span class="toc-number">1.</span> <span class="toc-text">
+          题单</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%80%8D%E5%A2%9E%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">
+          倍增法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ST%E8%A1%A8"><span class="toc-number">2.1.</span> <span class="toc-text">
+          ST表</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ST%E8%A1%A8-%E4%BA%8C%E7%BB%B4RMQ"><span class="toc-number">2.1.1.</span> <span class="toc-text">
+          ST表-二维RMQ</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LCA-%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88"><span class="toc-number">2.2.</span> <span class="toc-text">
+          LCA-最近公共祖先</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RMQ%E7%81%B5%E6%B4%BB%E8%BF%90%E7%94%A8%EF%BC%8C%E6%B1%82%E5%8C%BA%E9%97%B4%E6%9C%80%E5%B8%B8%E5%87%BA%E7%8E%B0%E6%95%B0%E5%AD%97%E7%9A%84%E6%95%B0%E9%87%8F"><span class="toc-number">2.3.</span> <span class="toc-text">
+          RMQ灵活运用，求区间最常出现数字的数量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LCA%E7%81%B5%E6%B4%BB%E8%BF%90%E7%94%A8%EF%BC%8C%E6%B1%82%E6%A0%91%E4%B8%8A%E4%B8%A4%E7%82%B9%E9%97%B4%E8%B7%9D%E7%A6%BB"><span class="toc-number">2.4.</span> <span class="toc-text">
+          LCA灵活运用，求树上两点间距离</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8C%BA%E9%97%B4%E8%A6%86%E7%9B%96%EF%BC%8C%E5%80%8D%E5%A2%9E%E6%B3%95%E5%A5%BD%E9%A2%98"><span class="toc-number">2.5.</span> <span class="toc-text">
+          区间覆盖，倍增法好题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%91%E4%B8%8A%E4%B8%8Ea%EF%BC%8Cb%E8%B7%9D%E7%A6%BB%E7%9B%B8%E7%AD%89%E7%9A%84%E7%82%B9%E6%9C%89%E5%A4%9A%E5%B0%91%E4%B8%AA"><span class="toc-number">2.6.</span> <span class="toc-text">
+          树上与a，b距离相等的点有多少个</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#a%E4%B8%AD%E4%B8%80%E5%8C%BA%E9%97%B4%E6%98%AF%E5%90%A6%E5%AD%98%E5%9C%A8%E5%AD%90%E5%BA%8F%E5%88%97%E4%B8%BAp%E7%9A%84%E4%B8%80%E4%B8%AA%E6%8E%92%E5%88%97-%E5%80%8D%E5%A2%9E%E5%A5%BD%E9%A2%98"><span class="toc-number">2.7.</span> <span class="toc-text">
+          a中一区间是否存在子序列为p的一个排列-倍增好题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%91%E4%B8%ADa%E7%9A%84k%E7%BA%A7%E5%AD%90%E5%AD%99%E6%9C%89%E5%A4%9A%E5%B0%91%E4%B8%AA-%E4%BA%8C%E5%88%86%E5%A5%BD%E9%A2%98"><span class="toc-number">2.8.</span> <span class="toc-text">
+          树中a的k级子孙有多少个-二分好题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E2%AD%90ST%E8%A1%A8-GCD-%E4%BA%8C%E5%88%86-%E7%BA%BF%E6%AE%B5%E6%A0%91%E6%85%A2"><span class="toc-number">2.9.</span> <span class="toc-text">
+          3⭐ST表-GCD-二分-线段树慢</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%80%8D%E5%A2%9E%EF%BC%8C%E8%B4%AA%E5%BF%83%EF%BC%8C%E8%B6%85%E6%97%B6%EF%BC%9F"><span class="toc-number">2.10.</span> <span class="toc-text">
+          倍增，贪心，超时？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%80%8D%E5%A2%9E-%E6%80%9D%E7%BB%B4%E5%A5%BD%E9%A2%98"><span class="toc-number">2.11.</span> <span class="toc-text">
+          倍增-思维好题</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/uploads/男4.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">夸父逐日，尽志也</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/Marhoosh/" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">39</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">0</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">14</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2021</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>Marhoosh</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.4.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.6.2</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__info">访问人数</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__info">浏览总量</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="搜索文章（支持多关键词，请用空格分隔）"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script>function initSearch() {
+  var isXML = true;
+  var search_path = 'search.json';
+
+  if (!search_path) {
+    search_path = 'search.xml';
+  } else if (/json$/i.test(search_path)) {
+    isXML = false;
+  }
+
+  var path = '/' + search_path;
+  $.ajax({
+    url: path,
+    dataType: isXML ? 'xml' : 'json',
+    async: true,
+    success: function (res) {
+      var datas = isXML ? $('entry', res).map(function () {
+        // 将 XML 转为 JSON
+        return {
+          title: $('title', this).text(),
+          content: $('content', this).text(),
+          url: $('url', this).text()
+        };
+      }).get() : res;
+      var $input = $('.search-input input');
+      var $result = $('.search-results');
+      // 搜索对象（标题、内容）的权重，影响显示顺序
+      var WEIGHT = { title: 100, content: 1 };
+      var searchPost = function () {
+        var searchText = $input.val().toLowerCase().trim();
+        // 根据空白字符分隔关键字
+        var keywords = searchText.split(/[\s]+/);
+        // 搜索结果
+        var matchPosts = [];
+
+        // 有多个关键字时，将原文字整个保存下来
+        if (keywords.length > 1) {
+          keywords.push(searchText);
+        }
+        // 防止未输入字符时搜索
+        if (searchText.length > 0) {
+          datas.forEach(function (data) {
+            var isMatch  = false;
+            // 没有标题的文章使用预设的 i18n 变量代替
+            var title = (data.title && data.title.trim()) || '[ 文章无标题 ]';
+            var titleLower = title && title.toLowerCase();
+            // 删除 HTML 标签 和 所有空白字符
+            var content = data.content && data.content.replace(/<[^>]+>/g, '');
+            var contentLower = content && content.toLowerCase();
+            // 删除重复的 /
+            var postURL = data.url && decodeURI(data.url).replace(/\/{2,}/g, '/');
+            // 标题中匹配到的关键词
+            var titleHitSlice = [];
+            // 内容中匹配到的关键词
+            var contentHitSlice = [];
+
+            keywords.forEach(function (keyword) {
+              /**
+              * 获取匹配的关键词的索引
+              * @param {String} keyword 要匹配的关键字
+              * @param {String} text 原文字
+              * @param {Boolean} caseSensitive 是否区分大小写
+              * @param {Number} weight 匹配对象的权重。权重大的优先显示
+              * @return {Array}
+              */
+              function getIndexByword (word, text, caseSensitive, weight) {
+                if (!word || !text) {
+                  return [];
+                };
+
+                var startIndex = 0; // 每次匹配的开始索引
+                var index = -1;     // 匹配到的索引值
+                var result = [];    // 匹配结果
+
+                if (!caseSensitive) {
+                  word = word.toLowerCase();
+                  text = text.toLowerCase();
+                }
+
+                while((index = text.indexOf(word, startIndex)) !== -1) {
+                  var hasMatch = false;
+                  // 索引位置相同的关键词，保留长度较长的
+                  titleHitSlice.forEach(function (hit) {
+                    if (hit.index === index && hit.word.length < word.length) {
+                      hit.word = word;
+                      hasMatch = true;
+                    }
+                  });
+                  startIndex = index + word.length;
+                  !hasMatch && result.push({ index: index, word: word, weight: weight });
+                }
+                return result;
+              }
+              titleHitSlice = titleHitSlice.concat(getIndexByword(keyword, titleLower, false, WEIGHT.title));
+              contentHitSlice = contentHitSlice.concat(getIndexByword(keyword, contentLower, false, WEIGHT.content));
+            });
+
+            var hitTitle = titleHitSlice.length;
+            var hitContent = contentHitSlice.length;
+
+            if (hitTitle > 0 || hitContent > 0) {
+              isMatch = true;
+            }
+            if (isMatch) {
+              ;[titleHitSlice, contentHitSlice].forEach(function (hit) {
+                // 按照匹配文字的索引的递增顺序排序
+                hit.sort(function (left, right) {
+                  return left.index - right.index;
+                });
+              });
+              /**
+              * 给文本中匹配到的关键词添加标记，从而进行高亮显示
+              * @param {String} text 原文本
+              * @param {Array} hitSlice 匹配项的索引信息
+              * @param {Number} start 开始索引
+              * @param {Number} end 结束索引
+              * @return {String}
+              */
+              function highlightKeyword (text, hitSlice, start, end) {
+                if (!text || !hitSlice || !hitSlice.length) {
+                  return;
+                }
+
+                var result = '';
+                var startIndex = start;
+                var endIndex = end;
+                hitSlice.forEach(function (hit) {
+                  if (hit.index < startIndex) {
+                    return;
+                  }
+
+                  var hitWordEnd = hit.index + hit.word.length;
+                  result += text.slice(startIndex, hit.index);
+                  result += '<b>' + text.slice(hit.index, hitWordEnd) + '</b>';
+                  startIndex = hitWordEnd;
+                });
+                result += text.slice(startIndex, endIndex);
+                return result;
+              }
+
+              var postData = {};
+              // 文章总的搜索权重
+              var postWeight = titleHitSlice.length * WEIGHT.title + contentHitSlice.length * WEIGHT.content;
+              // 标记匹配关键词后的标题
+              var postTitle = highlightKeyword(title, titleHitSlice, 0, title.length) || title;
+              // 标记匹配关键词后的内容
+              var postContent;
+              // 显示内容的长度
+              var SHOW_WORD_LENGTH = 200;
+              // 命中关键词前的字符显示长度
+              var SHOW_WORD_FRONT_LENGTH = 20;
+              var SHOW_WORD_END_LENGTH = SHOW_WORD_LENGTH - SHOW_WORD_FRONT_LENGTH;
+
+              // 截取匹配的第一个字符，前后共 200 个字符来显示
+              if (contentHitSlice.length > 0) {
+                var firstIndex = contentHitSlice[0].index;
+                var start = firstIndex > SHOW_WORD_FRONT_LENGTH ? firstIndex - SHOW_WORD_FRONT_LENGTH : 0;
+                var end = firstIndex + SHOW_WORD_END_LENGTH;
+                postContent = highlightKeyword(content, contentHitSlice, start, end);
+              } else { // 未匹配到内容，直接截取前 200 个字符来显示
+                postContent = content.slice(0, SHOW_WORD_LENGTH);
+              }
+              postData.title = postTitle;
+              postData.content = postContent;
+              postData.url = postURL;
+              postData.weight = postWeight;
+              matchPosts.push(postData);
+            }
+          });
+        }
+
+        var resultInnerHtml = '';
+        if (matchPosts.length) {
+          // 按权重递增的顺序排序，使权重大的优先显示
+          matchPosts.sort(function (left, right) {
+            return right.weight - left.weight;
+          });
+          resultInnerHtml += '<ul>';
+          matchPosts.forEach(function (post) {
+            resultInnerHtml += '<li><a class="search-results-title" href="' + post.url + '">';
+            resultInnerHtml += post.title;
+            resultInnerHtml += '</a><div class="search-results-content">';
+            resultInnerHtml += post.content;
+            resultInnerHtml += '</div></li>';
+          });
+          resultInnerHtml += '</ul>';
+        } else {
+          resultInnerHtml += '<div class="search-results-none"><i class="far fa-meh"></i></div>';
+        }
+        $result.html(resultInnerHtml);
+      };
+      $input.on('input', searchPost);
+      $input.on('keyup', function (e) {
+        if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
+          searchPost();
+        }
+      });
+    }
+  });
+}
+
+function closeSearch () {
+  $('body').css({ overflow: 'auto' });
+  $('.search-popup').css({ display: 'none' });
+  $('.search-mask').css({ display: 'none' });
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+  Stun.utils.pjaxReloadLocalSearch = function () {
+    $('.header-nav-search').on('click', function (e) {
+      e.stopPropagation();
+      $('body').css('overflow', 'hidden');
+      $('.search-popup')
+        .velocity('stop')
+        .velocity('transition.expandIn', {
+          duration: 300,
+          complete: function () {
+            $('.search-popup input').focus();
+          }
+        });
+      $('.search-mask')
+        .velocity('stop')
+        .velocity('transition.fadeIn', {
+          duration: 300
+        });
+
+      initSearch();
+    });
+    $('.search-mask, .search-close').on('click', function () {
+      closeSearch();
+    });
+    $(document).on('keydown', function (e) {
+      // Escape <=> 27
+      if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+        closeSearch();
+      }
+    });
+  };
+
+  Stun.utils.pjaxReloadLocalSearch();
+}, false);
+
+function safeOpenUrl(url) {
+  var newTab = window.open();
+  newTab.opener = null;
+  newTab.location = url;
+}
+
+function extSearch(engine) {
+  var engines = {
+    google: 'https://www.google.com/search?q=',
+    bing: 'https://cn.bing.com/search?q=',
+    baidu: 'https://www.baidu.com/s?ie=UTF-8&wd=',
+  };
+  var host = window.location.host;
+  var query = $('.search-input input').val().toLowerCase().trim();
+  var uri = engines[engine] + query + ' site:' + host;
+
+  if (query) {
+    safeOpenUrl(uri);
+  } else {
+    Stun.utils.popAlert('warning', '请输入字符');
+  }
+}
+
+var assistSearchList = window.CONFIG.assistSearch;
+
+if (Array.isArray(assistSearchList)) {
+  assistSearchList.forEach(function (name) {
+    document.querySelector('.search-btns-item--' + name).addEventListener('click', function () {
+      extSearch(name);
+    }, false);
+  });
+}</script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script><script src="https://cdn.jsdelivr.net/npm/js-md5@latest/src/md5.min.js"></script><script>function loadGitalk () {
+  if (!document.getElementById('gitalk-container')) {
+    return;
+  }
+
+  var gitalk = new Gitalk({
+    id: md5(window.location.pathname.slice(1)),
+    clientID: 'dfb2efe6b7d9077b91a1',
+    clientSecret: '57ed4561148ba56e289a26cfbfc7fecc9610be2e',
+    repo: 'Marhoosh.github.io',
+    owner: 'Marhoosh',
+    admin: ['Marhoosh'],
+    distractionFreeMode: 'true',
+    language: 'zh-CN'
+  });
+  gitalk.render('gitalk-container');
+}
+
+if (false) {
+  loadGitalk();
+} else {
+  window.addEventListener('DOMContentLoaded', loadGitalk, false);
+}</script><script src="/js/utils.js?v=2.6.2"></script><script src="/js/stun-boot.js?v=2.6.2"></script><script src="/js/scroll.js?v=2.6.2"></script><script src="/js/header.js?v=2.6.2"></script><script src="/js/sidebar.js?v=2.6.2"></script><script type="application/json" src="/search.json"></script></body></html>

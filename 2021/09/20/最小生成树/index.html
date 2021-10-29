@@ -1,0 +1,401 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.6.2" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.6.2" type="image/png" sizes="32x32"><meta name="description" content="kruskal prim ..">
+<meta property="og:type" content="article">
+<meta property="og:title" content="最小生成树">
+<meta property="og:url" content="https://marhoosh.github.io/2021/09/20/%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91/index.html">
+<meta property="og:site_name" content="Marhoosh&#39;S Blog">
+<meta property="og:description" content="kruskal prim ..">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://marhoosh.github.io/uploads/%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91/2021-10-13-14-32-49.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/da9f37d33d494759b106faaed5b2672e.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/e6b54fba62554c22acca6cfd1d407586.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NTcyNzE4OA==,size_16,color_FFFFFF,t_70">
+<meta property="article:published_time" content="2021-09-20T12:46:49.000Z">
+<meta property="article:modified_time" content="2021-10-13T06:33:19.886Z">
+<meta property="article:author" content="Marhoosh">
+<meta property="article:tag" content="图论">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://marhoosh.github.io/uploads/%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91/2021-10-13-14-32-49.png"><title>最小生成树 | Marhoosh'S Blog</title><link ref="canonical" href="https://marhoosh.github.io/2021/09/20/%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.6.2"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":false,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"carbon","highlight":"ocean","wordWrap":true},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 5.4.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/friendlinks/"><span class="header-nav-menu-item__icon"><i class="fas fa-link"></i></span><span class="header-nav-menu-item__text">友链</span></a></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">最小生成树</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2021-09-20</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2021-10-13</span></span><span class="post-meta-item post-meta-item--visitors"><span class="post-meta-item__icon"><i class="fas fa-eye"></i></span><span class="post-meta-item__info">阅读次数</span><span class="post-meta-item__value" id="busuanzi_value_page_pv"></span></span></div></header><div class="post-body"><p>kruskal prim ..</p>
+<span id="more"></span>
+
+
+        <h1 id="kruskal"   >
+          <a href="#kruskal" class="heading-link"><i class="fas fa-link"></i></a><a href="#kruskal" class="headerlink" title="kruskal"></a>kruskal</h1>
+      <ul>
+<li><strong>思路</strong>  贪心，每次选择权值最小的边，保证每次加入新边不会生成环</li>
+<li><strong>难点</strong>  如何判定生成环，方法：保证新加入的边的两个端点，不都在已加入的边的端点集合中，用<strong>并查集</strong>实现</li>
+<li>链式前向星模板 时间O(m*logm)(m为边数)</li>
+</ul>
+<figure class="highlight cpp"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//链式前向星(kruskal用邻接矩阵不太好写)-----------------------------------</span></span><br><span class="line"><span class="comment">/*** </span></span><br><span class="line"><span class="comment"> * @Practice Win</span></span><br><span class="line"><span class="comment"> * 洛谷 P3366 【模板】最小生成树</span></span><br><span class="line"><span class="comment"> * 最小生成树 板子题</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> comment(linker, <span class="meta-string">&quot;/STACK:102400000,102400000&quot;</span>)<span class="comment">//解决递归函数多次调用栈溢出问题</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> Debug(x) cout&lt;&lt;#x&lt;&lt;<span class="meta-string">&#x27;:&#x27;</span>&lt;&lt;x&lt;&lt;endl</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> ll;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INF 0x7fffffff<span class="comment">//10^9级别，不到2^32</span></span></span><br><span class="line"><span class="keyword">const</span> ll maxn=<span class="number">1e4</span>+<span class="number">11</span>;<span class="comment">//最多点数！！！</span></span><br><span class="line"><span class="keyword">const</span> ll maxm=<span class="number">1e6</span>+<span class="number">11</span>;<span class="comment">//最多边数！！！</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Edge</span>&#123;</span></span><br><span class="line">	ll fr,to,w,next;</span><br><span class="line">&#125;edge[maxm];<span class="comment">//边集，下标从1开始！！！</span></span><br><span class="line">ll fa[maxn],head[maxn];</span><br><span class="line">ll n,m,tmp;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">(ll u,ll v,ll w)</span></span>&#123;</span><br><span class="line">	edge[tmp].fr=u; edge[tmp].to=v; edge[tmp].w=w;</span><br><span class="line">	edge[tmp].next=head[u];</span><br><span class="line">	head[u]=tmp++;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">cmp</span><span class="params">(Edge a,Edge b)</span></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> a.w&lt;b.w;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">ll <span class="title">found</span><span class="params">(ll x)</span></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> fa[x]==x?x:fa[x]=<span class="built_in">found</span>(fa[x]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">ll <span class="title">kruskal</span><span class="params">()</span></span>&#123;<span class="comment">//若存在最小生成树，返回其最小权值和,并输出，若不存在，返回一个错误值，并输出“orz”</span></span><br><span class="line">	<span class="built_in">sort</span>(edge+<span class="number">1</span>,edge+tmp,cmp);</span><br><span class="line">	ll cnt=<span class="number">0</span>,ans=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(ll i=<span class="number">1</span>;i&lt;tmp;i++)&#123;<span class="comment">//边编号从1开始！！！</span></span><br><span class="line">		ll fu=<span class="built_in">found</span>(edge[i].fr);<span class="comment">//并查集得到fu和fv</span></span><br><span class="line">		ll fv=<span class="built_in">found</span>(edge[i].to);</span><br><span class="line">		<span class="keyword">if</span>(fu==fv) <span class="keyword">continue</span>;<span class="comment">//若在同一集合，则跳过，说明这两个点都已被使用过</span></span><br><span class="line">		fa[fu]=fv;<span class="comment">//合并</span></span><br><span class="line">		cnt++;</span><br><span class="line">		ans+=edge[i].w;</span><br><span class="line">		<span class="keyword">if</span>(cnt==n<span class="number">-1</span>)  <span class="keyword">break</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(cnt==n<span class="number">-1</span>)  cout&lt;&lt;ans&lt;&lt;endl;</span><br><span class="line">	<span class="keyword">else</span>  cout&lt;&lt;<span class="string">&quot;orz&quot;</span>&lt;&lt;endl;</span><br><span class="line">	<span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">makset</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(ll i=<span class="number">1</span>;i&lt;=n;i++)  fa[i]=i;<span class="comment">//点的编号应与题目相符合！！！</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="built_in">memset</span>(head,<span class="number">-1</span>,<span class="built_in"><span class="keyword">sizeof</span></span>(head));</span><br><span class="line">	tmp=<span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    ios::<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>);</span><br><span class="line">    cin.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">	cin&gt;&gt;n&gt;&gt;m;</span><br><span class="line">    <span class="built_in">init</span>();</span><br><span class="line">    <span class="built_in">makset</span>();</span><br><span class="line">    <span class="keyword">for</span>(ll i=<span class="number">1</span>;i&lt;=m;i++)&#123;</span><br><span class="line">        ll u,v,w;</span><br><span class="line">        cin&gt;&gt;u&gt;&gt;v&gt;&gt;w;</span><br><span class="line">        <span class="built_in">add</span>(u,v,w);<span class="comment">//有向图</span></span><br><span class="line">		<span class="comment">//add(v,u,w);//无向图</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">kruskal</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+
+        <h1 id="灵活运用，唯一最小生成树（思维）"   >
+          <a href="#灵活运用，唯一最小生成树（思维）" class="heading-link"><i class="fas fa-link"></i></a><a href="#灵活运用，唯一最小生成树（思维）" class="headerlink" title="灵活运用，唯一最小生成树（思维）"></a>灵活运用，唯一最小生成树（思维）</h1>
+      <p><strong>题目链接</strong>  <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://vjudge.net/problem/POJ-1679" >https://vjudge.net/problem/POJ-1679</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span><br><strong>题意</strong>  判断最小生成树是否唯一<br><strong>思路</strong>枚举最小生成树的n条边，每次减去一条边，看最小生成树是否存在 </p>
+
+        <h1 id="弱思维"   >
+          <a href="#弱思维" class="heading-link"><i class="fas fa-link"></i></a><a href="#弱思维" class="headerlink" title="弱思维"></a>弱思维</h1>
+      <p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="http://codeforces.com/gym/103098/problem/C" >Cartesian MST</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>题面：求两个树的笛卡尔积产生的树的最小生成树。</p>
+<p>如图：</p>
+<p><img src="/uploads/%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91/2021-10-13-14-32-49.png"></p>
+<p>思路：这个画个图，模拟一下应该不难想</p>
+<figure class="highlight cpp"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">* @Author: Marhoosh</span></span><br><span class="line"><span class="comment">* @Date:   2021-07-22 10:27:41</span></span><br><span class="line"><span class="comment">* @Last Modified by:   Marhoosh</span></span><br><span class="line"><span class="comment">* @Last Modified time: 2021-10-13 14:25:30</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> comment(linker, <span class="meta-string">&quot;/STACK:102400000,102400000&quot;</span>)</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> Debug(x) cout&lt;&lt;#x&lt;&lt;<span class="meta-string">&#x27;:&#x27;</span>&lt;&lt;x&lt;&lt;endl</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INF 0x7fffffff</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> ll;</span><br><span class="line"><span class="keyword">typedef</span> pair&lt;ll,ll&gt; P;</span><br><span class="line"><span class="keyword">const</span> ll maxn=<span class="number">2e5</span>+<span class="number">11</span>;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Edge</span>&#123;</span></span><br><span class="line">    ll fr,to,w,type;</span><br><span class="line">    <span class="keyword">bool</span> <span class="keyword">operator</span> &lt; (<span class="keyword">const</span> Edge&amp; b) <span class="keyword">const</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> w&lt;b.w;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;e[maxn];</span><br><span class="line">ll f1[maxn],f2[maxn];</span><br><span class="line">ll n1,m1,n2,m2;</span><br><span class="line"><span class="function">ll <span class="title">found1</span><span class="params">(ll x)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> f1[x]==x?x:f1[x]=<span class="built_in">found1</span>(f1[x]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">ll <span class="title">found2</span><span class="params">(ll x)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> f2[x]==x?x:f2[x]=<span class="built_in">found2</span>(f2[x]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    ios::<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>);</span><br><span class="line">    cin.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">    cin&gt;&gt;n1&gt;&gt;m1&gt;&gt;n2&gt;&gt;m2;</span><br><span class="line">    <span class="keyword">for</span>(ll i=<span class="number">0</span>;i&lt;n1;i++)  f1[i]=i;</span><br><span class="line">    <span class="keyword">for</span>(ll i=<span class="number">0</span>;i&lt;n2;i++)  f2[i]=i;</span><br><span class="line">    ll tmp=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(ll i=<span class="number">1</span>;i&lt;=m1;i++)&#123;</span><br><span class="line">        ll u,v,w;cin&gt;&gt;u&gt;&gt;v&gt;&gt;w;</span><br><span class="line">        e[tmp++]=&#123;u,v,w,<span class="number">1</span>&#125;;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(ll i=<span class="number">1</span>;i&lt;=m2;i++)&#123;</span><br><span class="line">        ll u,v,w;cin&gt;&gt;u&gt;&gt;v&gt;&gt;w;</span><br><span class="line">        e[tmp++]=&#123;u,v,w,<span class="number">2</span>&#125;;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">sort</span>(e,e+tmp);</span><br><span class="line">    ll cnt=<span class="number">0</span>,cnt1=<span class="number">0</span>,cnt2=<span class="number">0</span>,p=<span class="number">0</span>,ans=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>(cnt&lt;=n1+n2<span class="number">-2</span> &amp;&amp; p&lt;tmp)&#123;</span><br><span class="line">        ll ty=e[p].type;</span><br><span class="line">        <span class="keyword">if</span>(ty==<span class="number">1</span>)&#123;</span><br><span class="line">            <span class="keyword">if</span>(cnt1&gt;=n1<span class="number">-1</span>)&#123;</span><br><span class="line">                p++;<span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            ll u=e[p].fr,v=e[p].to;</span><br><span class="line">            ll fu=<span class="built_in">found1</span>(u),fv=<span class="built_in">found1</span>(v);</span><br><span class="line">            <span class="keyword">if</span>(fu==fv)&#123;</span><br><span class="line">                p++;<span class="keyword">continue</span>;</span><br><span class="line">            &#125;  </span><br><span class="line">            f1[fu]=fv;</span><br><span class="line">            ans=ans+(n2-cnt2)*e[p].w;</span><br><span class="line">            cnt1++;cnt++;p++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">if</span>(cnt2&gt;=n2<span class="number">-1</span>)&#123;</span><br><span class="line">                p++;<span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            ll u=e[p].fr,v=e[p].to;</span><br><span class="line">            ll fu=<span class="built_in">found2</span>(u),fv=<span class="built_in">found2</span>(v);</span><br><span class="line">            <span class="keyword">if</span>(fu==fv)&#123;</span><br><span class="line">                p++;<span class="keyword">continue</span>;</span><br><span class="line">            &#125; </span><br><span class="line">            f2[fu]=fv;</span><br><span class="line">            ans=ans+(n1-cnt1)*e[p].w;</span><br><span class="line">            cnt2++;cnt++;p++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    cout&lt;&lt;ans&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+
+
+        <h1 id="prim"   >
+          <a href="#prim" class="heading-link"><i class="fas fa-link"></i></a><a href="#prim" class="headerlink" title="prim"></a>prim</h1>
+      <ul>
+<li><strong>思路</strong>  感觉本质上就是kruskal，与kruskal思路没啥区别，要说区别就是kruskal过程上是加边，这个是过程上加点吧，但其实都是每次选择权值最小的边，都是贪心。</li>
+<li><strong>具体方法</strong>  弄两个点集，一个u，一个v，每次选择一个端点在u，一个端点在v产生的边中，权值最小的边，并把在v中的点，加入u中。</li>
+<li>链式前向星模板 时间O(n*n)</li>
+</ul>
+<figure class="highlight cpp"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//链式前向星-----------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">/*** </span></span><br><span class="line"><span class="comment"> * @Practice Win</span></span><br><span class="line"><span class="comment"> * 畅通工程 HDU - 1863 </span></span><br><span class="line"><span class="comment"> * prim</span></span><br><span class="line"><span class="comment"> * 最小生成树 板子题</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> comment(linker, <span class="meta-string">&quot;/STACK:102400000,102400000&quot;</span>)<span class="comment">//解决递归函数多次调用栈溢出问题</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> Debug(x) cout&lt;&lt;#x&lt;&lt;<span class="meta-string">&#x27;:&#x27;</span>&lt;&lt;x&lt;&lt;endl</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> ll;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INF 0x7fffffff<span class="comment">//10^9级别，不到2^32</span></span></span><br><span class="line"><span class="keyword">const</span> ll maxn=<span class="number">1e2</span>+<span class="number">11</span>;<span class="comment">//最大顶点数</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Edge</span>&#123;</span></span><br><span class="line">	ll fr,to,w,next;</span><br><span class="line">&#125;edge[maxn*maxn];</span><br><span class="line">ll head[maxn],vis[maxn],dis[maxn];</span><br><span class="line">ll n,m,tmp;</span><br><span class="line"><span class="function">ll <span class="title">prim</span><span class="params">()</span></span>&#123;<span class="comment">//若存在最小生成树，返回其值并输出，否则返回一个未知值，并输出&quot;?&quot;</span></span><br><span class="line">	ll minn=INF,pos,ans=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(ll i=head[<span class="number">1</span>];~i;i=edge[i].next)&#123;<span class="comment">//从顶点编号1开始初始化</span></span><br><span class="line">		ll v=edge[i].to;</span><br><span class="line">		dis[v]=<span class="built_in">min</span>(dis[v],edge[i].w);<span class="comment">//考虑有重边情况！！！</span></span><br><span class="line">	&#125;</span><br><span class="line">	vis[<span class="number">1</span>]=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span>(ll i=<span class="number">2</span>;i&lt;=n;i++)&#123; </span><br><span class="line">		ll minn=INF;</span><br><span class="line">		pos=<span class="number">-1</span>;</span><br><span class="line">		<span class="keyword">for</span>(ll j=<span class="number">1</span>;j&lt;=n;j++)  <span class="keyword">if</span>(!vis[j] &amp;&amp; dis[j]&lt;minn)  minn=dis[j],pos=j;</span><br><span class="line">		<span class="keyword">if</span>(pos==<span class="number">-1</span>)  <span class="keyword">break</span>;</span><br><span class="line">		vis[pos]=<span class="number">1</span>;</span><br><span class="line">		ans+=minn;</span><br><span class="line">		<span class="keyword">for</span>(ll i=head[pos];~i;i=edge[i].next)&#123;</span><br><span class="line">			ll v=edge[i].to;</span><br><span class="line">			<span class="keyword">if</span>(edge[i].w&lt;dis[v])  dis[v]=edge[i].w;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(pos==<span class="number">-1</span>)  cout&lt;&lt;<span class="string">&quot;?&quot;</span>&lt;&lt;endl;</span><br><span class="line">	<span class="keyword">else</span>  cout&lt;&lt;ans&lt;&lt;endl;</span><br><span class="line">	<span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">(ll u,ll v,ll w)</span></span>&#123;</span><br><span class="line">	edge[tmp].fr=u; edge[tmp].to=v; edge[tmp].w=w;</span><br><span class="line">	edge[tmp].next=head[u];</span><br><span class="line">	head[u]=tmp++;</span><br><span class="line">&#125;	</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="built_in">memset</span>(vis,<span class="number">0</span>,<span class="built_in"><span class="keyword">sizeof</span></span>(vis));</span><br><span class="line">	<span class="built_in">memset</span>(head,<span class="number">-1</span>,<span class="built_in"><span class="keyword">sizeof</span></span>(head));</span><br><span class="line">	<span class="built_in">memset</span>(dis,<span class="number">0x3f3f3f3f</span>,<span class="built_in"><span class="keyword">sizeof</span></span>(dis));</span><br><span class="line">	tmp=<span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    ios::<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>);</span><br><span class="line">    cin.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">	<span class="keyword">while</span>(cin&gt;&gt;m&gt;&gt;n &amp;&amp; m)&#123;</span><br><span class="line">		<span class="built_in">init</span>();</span><br><span class="line">		<span class="keyword">for</span>(ll i=<span class="number">1</span>;i&lt;=m;i++)&#123;</span><br><span class="line">			ll u,v,w;</span><br><span class="line">			cin&gt;&gt;u&gt;&gt;v&gt;&gt;w;</span><br><span class="line">			<span class="built_in">add</span>(u,v,w);</span><br><span class="line">			<span class="built_in">add</span>(v,u,w);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="built_in">prim</span>();</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+<ul>
+<li>邻接矩阵模板 时间O(n*n)</li>
+</ul>
+<figure class="highlight cpp"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//邻接矩阵-----------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">/*** </span></span><br><span class="line"><span class="comment"> * @Practice Win</span></span><br><span class="line"><span class="comment"> * 畅通工程 HDU - 1863 </span></span><br><span class="line"><span class="comment"> * prim</span></span><br><span class="line"><span class="comment"> * 最小生成树 板子题</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> comment(linker, <span class="meta-string">&quot;/STACK:102400000,102400000&quot;</span>)<span class="comment">//解决递归函数多次调用栈溢出问题</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> Debug(x) cout&lt;&lt;#x&lt;&lt;<span class="meta-string">&#x27;:&#x27;</span>&lt;&lt;x&lt;&lt;endl</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> ll;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INF 0x7fffffff<span class="comment">//10^9级别，不到2^32</span></span></span><br><span class="line"><span class="keyword">const</span> ll maxn=<span class="number">1e2</span>+<span class="number">11</span>;<span class="comment">//最大顶点数</span></span><br><span class="line">ll vis[maxn],dis[maxn],gra[maxn][maxn];</span><br><span class="line">ll n,m;</span><br><span class="line"><span class="function">ll <span class="title">prim</span><span class="params">()</span></span>&#123;<span class="comment">//若存在最小生成树，返回其值并输出，否则返回一个未知值，并输出&quot;?&quot;</span></span><br><span class="line">	ll minn=INF,pos,ans=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(ll i=<span class="number">1</span>;i&lt;=n;i++)  dis[i]=gra[<span class="number">1</span>][i];</span><br><span class="line">	vis[<span class="number">1</span>]=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span>(ll i=<span class="number">2</span>;i&lt;=n;i++)&#123; </span><br><span class="line">		ll minn=INF;</span><br><span class="line">		pos=<span class="number">-1</span>;</span><br><span class="line">		<span class="keyword">for</span>(ll j=<span class="number">1</span>;j&lt;=n;j++)  <span class="keyword">if</span>(!vis[j] &amp;&amp; dis[j]&lt;minn)  minn=dis[j],pos=j;</span><br><span class="line">		<span class="keyword">if</span>(pos==<span class="number">-1</span>)  <span class="keyword">break</span>;</span><br><span class="line">		vis[pos]=<span class="number">1</span>;</span><br><span class="line">		ans+=minn;</span><br><span class="line">		<span class="keyword">for</span>(ll j=<span class="number">1</span>;j&lt;=n;j++)  <span class="keyword">if</span>(!vis[j] &amp;&amp; gra[pos][j]&lt;dis[j])  dis[j]=gra[pos][j];</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(pos==<span class="number">-1</span>)  cout&lt;&lt;<span class="string">&quot;?&quot;</span>&lt;&lt;endl;</span><br><span class="line">	<span class="keyword">else</span>  cout&lt;&lt;ans&lt;&lt;endl;</span><br><span class="line">	<span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line">	</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="built_in">memset</span>(vis,<span class="number">0</span>,<span class="built_in"><span class="keyword">sizeof</span></span>(vis));</span><br><span class="line">	<span class="built_in">memset</span>(dis,<span class="number">0x3f3f3f3f</span>,<span class="built_in"><span class="keyword">sizeof</span></span>(dis));</span><br><span class="line">	<span class="built_in">memset</span>(gra,<span class="number">0x3f3f3f3f</span>,<span class="built_in"><span class="keyword">sizeof</span></span>(gra));</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    ios::<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>);</span><br><span class="line">    cin.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">	<span class="keyword">while</span>(cin&gt;&gt;m&gt;&gt;n &amp;&amp; m)&#123;</span><br><span class="line">		<span class="built_in">init</span>();</span><br><span class="line">		<span class="keyword">for</span>(ll i=<span class="number">1</span>;i&lt;=m;i++)&#123;</span><br><span class="line">			ll u,v,w;</span><br><span class="line">			cin&gt;&gt;u&gt;&gt;v&gt;&gt;w;</span><br><span class="line">			<span class="keyword">if</span>(w&lt;gra[u][v])  gra[u][v]=gra[v][u]=w;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="built_in">prim</span>();</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+
+        <h1 id="灵活运用（已建立某些边）"   >
+          <a href="#灵活运用（已建立某些边）" class="heading-link"><i class="fas fa-link"></i></a><a href="#灵活运用（已建立某些边）" class="headerlink" title="灵活运用（已建立某些边）"></a>灵活运用（已建立某些边）</h1>
+      <p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://vjudge.net/problem/HDU-1879" >继续畅通工程</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span><br><strong>题意</strong> 在有些边已经建立好了的情况下，求最小生成树。<br><strong>思路</strong>  对于已经建立的边，将其权值变为0即可。</p>
+
+        <h1 id="灵活运用（已知每个点的代价）"   >
+          <a href="#灵活运用（已知每个点的代价）" class="heading-link"><i class="fas fa-link"></i></a><a href="#灵活运用（已知每个点的代价）" class="headerlink" title="灵活运用（已知每个点的代价）"></a>灵活运用（已知每个点的代价）</h1>
+      <p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://codeforces.com/problemset/problem/1245/D" >Shichikuji and Power Grid</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span><br>常见最小生成树是知道每条边的代价，这题增加了一个就是还知道每个点的代价。<br><strong>题面</strong><br>有n个城市,坐标为(xi,yi),还有两个系数ci,ki.在每个城市建立发电站需要费用ci.如果不建立发电站，要让城市通电，就需要与有发电站的城市连通。i与j之间连一条无向的边的费用是(ki+kj)*两个城市之间的曼哈顿距离.求让每个城市都通电的最小费用,并输出任意一个方案。</p>
+<p><strong>分析</strong><br>我刚开始想的就是，这不就是prim，然后将dis[i]初始化为每个点的代价嘛，然后发现这是个常见套路，也可以<strong>把选每个点的代价转成虚拟原点到这个点的边</strong>,不过这样子更好理解。这个套路很常见，但在最小生成树题里还是第一次见到。</p>
+<p>城市之间两两连边，边权按题目里提到的计算。然后建立一个虚拟源点，向每个城市i连边，边权为ci.对整个图跑一个最小生成树即可.</p>
+<hr>
+<ul>
+<li><p><strong>总结</strong></p>
+</li>
+<li><p><strong>两者区别</strong>这个方法的好处就是，因为分成了两个点集合，所以保证了选择的权值最小的边肯定不会产生环，因为这个边的端点分别在两个互斥的集合嘛，不像kruskal选择的边可能都在集合u。 </p>
+</li>
+<li><p><strong>稀疏图与稠密图</strong>数据结构中对于稀疏图的定义为：有很少条边或弧（边的条数|E|远小于|V|²）的图称为稀疏图（sparse graph），反之边的条数|E|接近|V|²，称为稠密图（dense graph）。此定义来自百度百科，实际上是一种朴素的理解，简单来说边越多，图就越稠密</p>
+</li>
+<li><p><strong>两者复杂度</strong><br>Kruskal:<br><img src="https://img-blog.csdnimg.cn/da9f37d33d494759b106faaed5b2672e.png" alt="在这里插入图片描述"><br>Prim:<br><img   src="https://img-blog.csdnimg.cn/e6b54fba62554c22acca6cfd1d407586.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NTcyNzE4OA==,size_16,color_FFFFFF,t_70" style="width: image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,tepx;height: t_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NTcyNzE4OApx;"  alt="在这里插入图片描述"></p>
+</li>
+</ul>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://Marhoosh.github.io">Marhoosh</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://marhoosh.github.io/2021/09/20/%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91/">https://marhoosh.github.io/2021/09/20/%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://marhoosh.github.io/tags/%E5%9B%BE%E8%AE%BA/">图论</a></span></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2021/09/26/%E4%B8%80%E9%94%99%E5%86%8D%E9%94%99/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">一错再错</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2021/09/20/%E6%9C%80%E7%9F%AD%E8%B7%AF/"><span class="paginator-prev__text">最短路</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="gitalk-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#kruskal"><span class="toc-number">1.</span> <span class="toc-text">
+          kruskal</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%81%B5%E6%B4%BB%E8%BF%90%E7%94%A8%EF%BC%8C%E5%94%AF%E4%B8%80%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91%EF%BC%88%E6%80%9D%E7%BB%B4%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">
+          灵活运用，唯一最小生成树（思维）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%B1%E6%80%9D%E7%BB%B4"><span class="toc-number">3.</span> <span class="toc-text">
+          弱思维</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#prim"><span class="toc-number">4.</span> <span class="toc-text">
+          prim</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%81%B5%E6%B4%BB%E8%BF%90%E7%94%A8%EF%BC%88%E5%B7%B2%E5%BB%BA%E7%AB%8B%E6%9F%90%E4%BA%9B%E8%BE%B9%EF%BC%89"><span class="toc-number">5.</span> <span class="toc-text">
+          灵活运用（已建立某些边）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%81%B5%E6%B4%BB%E8%BF%90%E7%94%A8%EF%BC%88%E5%B7%B2%E7%9F%A5%E6%AF%8F%E4%B8%AA%E7%82%B9%E7%9A%84%E4%BB%A3%E4%BB%B7%EF%BC%89"><span class="toc-number">6.</span> <span class="toc-text">
+          灵活运用（已知每个点的代价）</span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/uploads/男4.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">夸父逐日，尽志也</p></div><div class="sidebar-ov-social"><a class="sidebar-ov-social-item" href="https://github.com/Marhoosh/" target="_blank" rel="noopener" data-popover="Github" data-popover-pos="up"><span class="sidebar-ov-social-item__icon"><i class="fab fa-github"></i></span></a></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">39</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">0</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">14</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2021</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>Marhoosh</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v5.4.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.6.2</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__info">访问人数</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__info">浏览总量</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="搜索文章（支持多关键词，请用空格分隔）"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script>function initSearch() {
+  var isXML = true;
+  var search_path = 'search.json';
+
+  if (!search_path) {
+    search_path = 'search.xml';
+  } else if (/json$/i.test(search_path)) {
+    isXML = false;
+  }
+
+  var path = '/' + search_path;
+  $.ajax({
+    url: path,
+    dataType: isXML ? 'xml' : 'json',
+    async: true,
+    success: function (res) {
+      var datas = isXML ? $('entry', res).map(function () {
+        // 将 XML 转为 JSON
+        return {
+          title: $('title', this).text(),
+          content: $('content', this).text(),
+          url: $('url', this).text()
+        };
+      }).get() : res;
+      var $input = $('.search-input input');
+      var $result = $('.search-results');
+      // 搜索对象（标题、内容）的权重，影响显示顺序
+      var WEIGHT = { title: 100, content: 1 };
+      var searchPost = function () {
+        var searchText = $input.val().toLowerCase().trim();
+        // 根据空白字符分隔关键字
+        var keywords = searchText.split(/[\s]+/);
+        // 搜索结果
+        var matchPosts = [];
+
+        // 有多个关键字时，将原文字整个保存下来
+        if (keywords.length > 1) {
+          keywords.push(searchText);
+        }
+        // 防止未输入字符时搜索
+        if (searchText.length > 0) {
+          datas.forEach(function (data) {
+            var isMatch  = false;
+            // 没有标题的文章使用预设的 i18n 变量代替
+            var title = (data.title && data.title.trim()) || '[ 文章无标题 ]';
+            var titleLower = title && title.toLowerCase();
+            // 删除 HTML 标签 和 所有空白字符
+            var content = data.content && data.content.replace(/<[^>]+>/g, '');
+            var contentLower = content && content.toLowerCase();
+            // 删除重复的 /
+            var postURL = data.url && decodeURI(data.url).replace(/\/{2,}/g, '/');
+            // 标题中匹配到的关键词
+            var titleHitSlice = [];
+            // 内容中匹配到的关键词
+            var contentHitSlice = [];
+
+            keywords.forEach(function (keyword) {
+              /**
+              * 获取匹配的关键词的索引
+              * @param {String} keyword 要匹配的关键字
+              * @param {String} text 原文字
+              * @param {Boolean} caseSensitive 是否区分大小写
+              * @param {Number} weight 匹配对象的权重。权重大的优先显示
+              * @return {Array}
+              */
+              function getIndexByword (word, text, caseSensitive, weight) {
+                if (!word || !text) {
+                  return [];
+                };
+
+                var startIndex = 0; // 每次匹配的开始索引
+                var index = -1;     // 匹配到的索引值
+                var result = [];    // 匹配结果
+
+                if (!caseSensitive) {
+                  word = word.toLowerCase();
+                  text = text.toLowerCase();
+                }
+
+                while((index = text.indexOf(word, startIndex)) !== -1) {
+                  var hasMatch = false;
+                  // 索引位置相同的关键词，保留长度较长的
+                  titleHitSlice.forEach(function (hit) {
+                    if (hit.index === index && hit.word.length < word.length) {
+                      hit.word = word;
+                      hasMatch = true;
+                    }
+                  });
+                  startIndex = index + word.length;
+                  !hasMatch && result.push({ index: index, word: word, weight: weight });
+                }
+                return result;
+              }
+              titleHitSlice = titleHitSlice.concat(getIndexByword(keyword, titleLower, false, WEIGHT.title));
+              contentHitSlice = contentHitSlice.concat(getIndexByword(keyword, contentLower, false, WEIGHT.content));
+            });
+
+            var hitTitle = titleHitSlice.length;
+            var hitContent = contentHitSlice.length;
+
+            if (hitTitle > 0 || hitContent > 0) {
+              isMatch = true;
+            }
+            if (isMatch) {
+              ;[titleHitSlice, contentHitSlice].forEach(function (hit) {
+                // 按照匹配文字的索引的递增顺序排序
+                hit.sort(function (left, right) {
+                  return left.index - right.index;
+                });
+              });
+              /**
+              * 给文本中匹配到的关键词添加标记，从而进行高亮显示
+              * @param {String} text 原文本
+              * @param {Array} hitSlice 匹配项的索引信息
+              * @param {Number} start 开始索引
+              * @param {Number} end 结束索引
+              * @return {String}
+              */
+              function highlightKeyword (text, hitSlice, start, end) {
+                if (!text || !hitSlice || !hitSlice.length) {
+                  return;
+                }
+
+                var result = '';
+                var startIndex = start;
+                var endIndex = end;
+                hitSlice.forEach(function (hit) {
+                  if (hit.index < startIndex) {
+                    return;
+                  }
+
+                  var hitWordEnd = hit.index + hit.word.length;
+                  result += text.slice(startIndex, hit.index);
+                  result += '<b>' + text.slice(hit.index, hitWordEnd) + '</b>';
+                  startIndex = hitWordEnd;
+                });
+                result += text.slice(startIndex, endIndex);
+                return result;
+              }
+
+              var postData = {};
+              // 文章总的搜索权重
+              var postWeight = titleHitSlice.length * WEIGHT.title + contentHitSlice.length * WEIGHT.content;
+              // 标记匹配关键词后的标题
+              var postTitle = highlightKeyword(title, titleHitSlice, 0, title.length) || title;
+              // 标记匹配关键词后的内容
+              var postContent;
+              // 显示内容的长度
+              var SHOW_WORD_LENGTH = 200;
+              // 命中关键词前的字符显示长度
+              var SHOW_WORD_FRONT_LENGTH = 20;
+              var SHOW_WORD_END_LENGTH = SHOW_WORD_LENGTH - SHOW_WORD_FRONT_LENGTH;
+
+              // 截取匹配的第一个字符，前后共 200 个字符来显示
+              if (contentHitSlice.length > 0) {
+                var firstIndex = contentHitSlice[0].index;
+                var start = firstIndex > SHOW_WORD_FRONT_LENGTH ? firstIndex - SHOW_WORD_FRONT_LENGTH : 0;
+                var end = firstIndex + SHOW_WORD_END_LENGTH;
+                postContent = highlightKeyword(content, contentHitSlice, start, end);
+              } else { // 未匹配到内容，直接截取前 200 个字符来显示
+                postContent = content.slice(0, SHOW_WORD_LENGTH);
+              }
+              postData.title = postTitle;
+              postData.content = postContent;
+              postData.url = postURL;
+              postData.weight = postWeight;
+              matchPosts.push(postData);
+            }
+          });
+        }
+
+        var resultInnerHtml = '';
+        if (matchPosts.length) {
+          // 按权重递增的顺序排序，使权重大的优先显示
+          matchPosts.sort(function (left, right) {
+            return right.weight - left.weight;
+          });
+          resultInnerHtml += '<ul>';
+          matchPosts.forEach(function (post) {
+            resultInnerHtml += '<li><a class="search-results-title" href="' + post.url + '">';
+            resultInnerHtml += post.title;
+            resultInnerHtml += '</a><div class="search-results-content">';
+            resultInnerHtml += post.content;
+            resultInnerHtml += '</div></li>';
+          });
+          resultInnerHtml += '</ul>';
+        } else {
+          resultInnerHtml += '<div class="search-results-none"><i class="far fa-meh"></i></div>';
+        }
+        $result.html(resultInnerHtml);
+      };
+      $input.on('input', searchPost);
+      $input.on('keyup', function (e) {
+        if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
+          searchPost();
+        }
+      });
+    }
+  });
+}
+
+function closeSearch () {
+  $('body').css({ overflow: 'auto' });
+  $('.search-popup').css({ display: 'none' });
+  $('.search-mask').css({ display: 'none' });
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+  Stun.utils.pjaxReloadLocalSearch = function () {
+    $('.header-nav-search').on('click', function (e) {
+      e.stopPropagation();
+      $('body').css('overflow', 'hidden');
+      $('.search-popup')
+        .velocity('stop')
+        .velocity('transition.expandIn', {
+          duration: 300,
+          complete: function () {
+            $('.search-popup input').focus();
+          }
+        });
+      $('.search-mask')
+        .velocity('stop')
+        .velocity('transition.fadeIn', {
+          duration: 300
+        });
+
+      initSearch();
+    });
+    $('.search-mask, .search-close').on('click', function () {
+      closeSearch();
+    });
+    $(document).on('keydown', function (e) {
+      // Escape <=> 27
+      if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+        closeSearch();
+      }
+    });
+  };
+
+  Stun.utils.pjaxReloadLocalSearch();
+}, false);
+
+function safeOpenUrl(url) {
+  var newTab = window.open();
+  newTab.opener = null;
+  newTab.location = url;
+}
+
+function extSearch(engine) {
+  var engines = {
+    google: 'https://www.google.com/search?q=',
+    bing: 'https://cn.bing.com/search?q=',
+    baidu: 'https://www.baidu.com/s?ie=UTF-8&wd=',
+  };
+  var host = window.location.host;
+  var query = $('.search-input input').val().toLowerCase().trim();
+  var uri = engines[engine] + query + ' site:' + host;
+
+  if (query) {
+    safeOpenUrl(uri);
+  } else {
+    Stun.utils.popAlert('warning', '请输入字符');
+  }
+}
+
+var assistSearchList = window.CONFIG.assistSearch;
+
+if (Array.isArray(assistSearchList)) {
+  assistSearchList.forEach(function (name) {
+    document.querySelector('.search-btns-item--' + name).addEventListener('click', function () {
+      extSearch(name);
+    }, false);
+  });
+}</script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script><script src="https://cdn.jsdelivr.net/npm/js-md5@latest/src/md5.min.js"></script><script>function loadGitalk () {
+  if (!document.getElementById('gitalk-container')) {
+    return;
+  }
+
+  var gitalk = new Gitalk({
+    id: md5(window.location.pathname.slice(1)),
+    clientID: 'dfb2efe6b7d9077b91a1',
+    clientSecret: '57ed4561148ba56e289a26cfbfc7fecc9610be2e',
+    repo: 'Marhoosh.github.io',
+    owner: 'Marhoosh',
+    admin: ['Marhoosh'],
+    distractionFreeMode: 'true',
+    language: 'zh-CN'
+  });
+  gitalk.render('gitalk-container');
+}
+
+if (false) {
+  loadGitalk();
+} else {
+  window.addEventListener('DOMContentLoaded', loadGitalk, false);
+}</script><script src="/js/utils.js?v=2.6.2"></script><script src="/js/stun-boot.js?v=2.6.2"></script><script src="/js/scroll.js?v=2.6.2"></script><script src="/js/header.js?v=2.6.2"></script><script src="/js/sidebar.js?v=2.6.2"></script><script type="application/json" src="/search.json"></script></body></html>
